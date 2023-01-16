@@ -1,0 +1,26 @@
+openapi: 3.0.3
+info:
+  title: Doutor Consulta Pet
+  description: |-
+    // TODO
+  version: 0.0.1
+
+tags:
+    - name: "Todo"
+
+paths:
+  /account:
+    get:
+      responses:
+        '200':
+          description: "Status Ok"
+
+components:
+  schemas:
+  #-----------------responses-------------------#
+  
+    404InvalidPayload:
+      type: object
+      properties:
+        error:
+          type: string
