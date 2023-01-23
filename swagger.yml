@@ -6,21 +6,161 @@ info:
   version: 0.0.1
 
 tags:
-    - name: "Todo"
-
+    - name: Auth
+    - name: User
+    
+servers:
+  - url: http://localhost:7071/api/v1
+    description: Local server
+    
 paths:
-  /account:
-    get:
+  /auth:
+    post:
+      summary: Get Token
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
       responses:
         '200':
           description: "Status Ok"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '404':
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/404NotFound'
+                
+                
+  /user/register:
+    post:
+      summary: Register new User
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+      responses:
+        '201':
+          description: "No Content"
+
+security:
+  - bearerAuth: [] 
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
+    Login:
+      type: object
+      properties:
+        email: 
+          type: string
+        password:
+          type: string
+          
+    Register:
+      type: object
+      properties:
+        fullName:
+          type: string
+          example: "Name Example"
+        birthDate:
+          type: string
+          example: "2023-01-01"
+        cpf:
+          type: string
+          example: "01234567890"
+        address:
+          type: object
+          properties:
+            zipCode:
+              type: number
+              example: 01001000
+            country:
+              type: string
+              example: "Brazil"
+            city:
+              type: string
+              example: "Sao Paulo"
+            streetName:
+              type: string
+              example: "Praça da Sé"
+            number:
+              type: number
+              example: 50
+            additionalInfo:
+              type: string
+              example: "Marco zero de Sao Paulo"
+            
+        email: 
+          type: string
+          example: "email@example.com"
+        phoneNumber:
+          type: string
+          example: "(11) 91234-5678"
+        password:
+          type: string
+          example: "Password#01"
+          
+    TokenResponse:      
+      type: object
+      properties:
+        token:
+          type: string
+        expires_at:
+          type: string
+          example: "2023-01-01 00:00:00"
+          
+  #-----------------entities-------------------#
+    User:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: ""
+        fullName:
+          type: string
+          example: ""
+        hashCpf:
+          type: string
+          example: ""
+        email:
+          type: string
+          example: "email@example.com"
+        birthDate:
+          type: string
+          example: "YYYY-MM-DDTHH:mm:ss.sssZ"
+        address:
+          type: object
+          properties:
+            schema:
+              $ref: "#/components/schemas/404NotFound"
+        cardInfo:
+          type: object
+          properties:
+            schema:
+              $ref: "#/components/schemas/404NotFound"
+        
   #-----------------responses-------------------#
-  
-    404InvalidPayload:
+    404NotFound:
       type: object
       properties:
         error:
           type: string
+          
