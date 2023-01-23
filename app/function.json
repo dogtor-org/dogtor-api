@@ -1,6 +1,5 @@
 {
-  "bindings": [
-    {
+  "bindings": [{
       "authLevel": "anonymous",
       "type": "httpTrigger",
       "direction": "in",
@@ -8,13 +7,15 @@
       "methods": [
         "get",
         "post"
-      ]
+      ],
+      "route": "v1/{*restOfPath}"
     },
+
     {
       "type": "http",
       "direction": "out",
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/HttpTrigger1/index.js"
+  "scriptFile": "../dist/app/index.js"
 }
