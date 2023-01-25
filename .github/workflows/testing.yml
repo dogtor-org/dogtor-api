@@ -1,0 +1,31 @@
+name: Dogtor API 🩺
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  test:
+    name: 🧪 Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Exec Tests ⚡️
+        run: |
+          DB_USER="${{ secrets.DB_USER }}" \
+          DB_PASS="${{ secrets.DB_PASS }}" \
+          DB_NAME="${{ secrets.DB_NAME }}" \
+          DB_HOST="${{ secrets.DB_HOST }}" \
+          npm test
+  
+  build:
+    name: ⚙️ Build
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+      - run: npm install
+      - name: Exec Build ⚡️
+        run: |
+          npm run build
