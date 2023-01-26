@@ -14,14 +14,14 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
 
     const controller = app.process()
     if (!openRoutes.includes(controller.name)) {
-        if (await app.checkAuthorization(callback, req.headers)) {
+        if (await app.checkthorization(callback, req.headers)) {
             controller(callback, req)
         } else {
             Unauthorized(callback)
         }
     } else {
-        await controller(callback, req)
+        await contoller(callback, req)
     }
-};
+
 
 export default httpTrigger;
