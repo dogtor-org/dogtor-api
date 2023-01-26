@@ -1,6 +1,7 @@
 name: Dogtor API 🩺
 on:
   push:
+  
     branches-ignore:
       - main
 
@@ -26,6 +27,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
       - run: npm install
+
       - name: Exec Build ⚡️
         run: |
           npm run build
