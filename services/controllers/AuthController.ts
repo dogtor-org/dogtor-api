@@ -1,17 +1,16 @@
 import * as bcrypt from 'bcrypt';
-import { HttpRequest, HttpRequestHeaders } from '@azure/functions'
-import { BadRequest, InternalServerError, StatusOk } from '../../utils/responses'
-import Handler from '../interfaces/infra/Handler'
-import { CallbackFunction } from '../interfaces/infra/Context'
 import * as jwt from "jsonwebtoken"
+import * as moment from 'moment';
+import Handler from '../interfaces/infra/Handler'
+import { BadRequest, InternalServerError, StatusOk } from '../../utils/responses'
 import { UserRepository } from '../repositories/UserRepository'
-import moment = require('moment');
 import { JwtPayload } from '../../app/router';
 import { User } from '../interfaces/types';
+import { APIGatewayEvent, APIGatewayProxyCallback, APIGatewayProxyEventHeaders } from 'aws-lambda';
 
-export const GetToken: Handler = async (callback: CallbackFunction, { body }: HttpRequest): Promise<any> => {
+export const GetToken: Handler = async (callback: APIGatewayProxyCallback, req: APIGatewayEvent): Promise<any> => {
     return new Promise(async (resolve, reject) => {
-        const { email, password } = body
+        const { email, password } = JSON.parse(req.body)
         if (!email || !password) return reject(BadRequest(callback, "no_email_or_password"))
 
         const userRepository = new UserRepository()
@@ -43,7 +42,7 @@ export const GetToken: Handler = async (callback: CallbackFunction, { body }: Ht
     })
 }
 
-export const getUser = async ({ authorization }: HttpRequestHeaders): Promise<User> => {
+export const getUser = async ({ authorization }: APIGatewayProxyEventHeaders): Promise<User> => {
     return new Promise(async (resolve, reject) => {
         const userRepository = new UserRepository()
         const { user_uuid } = jwt.verify(authorization.split(" ")[1], process.env.JWT_SECRET) as JwtPayload

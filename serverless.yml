@@ -1,0 +1,51 @@
+service: dogtor-api
+
+frameworkVersion: '3'
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  
+  NodeEnv:
+    dev: development
+    prd: production
+
+  domain:
+    dev: api.dev.dogtor.store
+    prd: api.dogtor.store
+
+  customCertificate:
+    certificateName: ${self:custom.domain.${self:provider.stage}}
+    hostedZoneNames: ${self:custom.domain.${self:provider.stage}}.
+
+  customDomain:
+    certificateName: ${self:custom.domain.${self:provider.stage}}
+    domainName: ${self:custom.domain.${self:provider.stage}}
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+  
+provider:
+  stage: ${opt:stage, 'prd'}
+  name: aws
+  runtime: nodejs16.x
+  region: sa-east-1
+
+  environment:
+    NODE_ENV: ${self:custom.NodeEnv.${self:provider.stage}}
+
+    DB_USER: ${env:DB_USER}
+    DB_PASS: ${env:DB_PASS}
+    DB_HOST: ${env:DB_HOST}
+    DB_NAME: ${env:DB_NAME}
+
+functions:
+  dogtor-api:
+    handler: app/index.handler
+    events:
+      - http:
+          path: /{any+}
+          method: ANY
+          cors: true
+
+plugins:
+  - serverless-domain-manager
+  - serverless-certificate-creator

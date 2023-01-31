@@ -1,65 +1,53 @@
-import { CallbackFunction } from "../../services/interfaces/infra/Context"
+import { APIGatewayProxyCallback } from 'aws-lambda';
 
-export const StatusOk = (callback: CallbackFunction, data: any) => {
-    callback({
-        res: {
-            statusCode: 200,
-            body: JSON.stringify(data)
-        },
+export const StatusOk = (callback: APIGatewayProxyCallback, data: any) => {
+    callback(null, {
+        statusCode: 200,
+        body: JSON.stringify(data)
     })
 }
 
-export const NoContent = (callback: CallbackFunction) => {
-    callback({
-        res: {
-            statusCode: 201,
-        },
+export const NoContent = (callback: APIGatewayProxyCallback) => {
+    callback(null, {
+        statusCode: 201,
+        body: ''
     })
 }
 
-export function BadRequest(callback: CallbackFunction, data: any) {
-    callback({
-        res: {
-            statusCode: 400,
-            body: JSON.stringify(data)
-        }
+export function BadRequest(callback: APIGatewayProxyCallback, data: any) {
+    callback(null, {
+        statusCode: 400,
+        body: JSON.stringify(data)
     })
 }
 
-export function Unauthorized(callback: CallbackFunction) {
-    callback({
-        res: {
-            statusCode: 401,
-        }
+export function Unauthorized(callback: APIGatewayProxyCallback) {
+    callback(null, {
+        statusCode: 401,
+        body: ''
     })
 }
 
-export function NotFound(callback: CallbackFunction, data: any) {
-    callback({
-        res: {
-            statusCode: 404,
-            body: JSON.stringify(data)
-        }
+export function NotFound(callback: APIGatewayProxyCallback, data: any) {
+    callback(null, {
+        statusCode: 404,
+        body: JSON.stringify(data)
     })
 }
 
-export function InternalServerError(callback: CallbackFunction, data: any) {
-    callback({
-        res: {
-            statusCode: 502,
-            body: JSON.stringify(data)
-        }
+export function InternalServerError(callback: APIGatewayProxyCallback, data: any) {
+    callback(null, {
+        statusCode: 502,
+        body: JSON.stringify(data)
     })
 }
 
-export function RouteNotFound(callback: CallbackFunction): Promise<any> {
+export function RouteNotFound(callback: APIGatewayProxyCallback): Promise<any> {
     return new Promise<any>((resolve, reject) => {
         resolve(
-            callback({
-                res: {
-                    statusCode: 404,
-                    body: "Route not found."
-                }
+            callback(null, {
+                statusCode: 404,
+                body: "Route not found."
             })
         )
     })

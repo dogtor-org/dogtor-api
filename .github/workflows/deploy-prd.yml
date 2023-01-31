@@ -16,8 +16,7 @@ jobs:
         run: |
           npm run build
       - name: Deploy 🪐
-        uses: Azure/functions-action@v1
-        with:
-          app-name: app
-          package: '.'
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+        run: |
+          export AWS_ACCESS_KEY_ID=${{ secrets.DOGTOR_AWS_ACCESS_KEY_ID }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.DOGTOR_AWS_SECRET_ACCESS_KEY }}
+          serverless deploy --stage dev --region sa-east-1 --verbose

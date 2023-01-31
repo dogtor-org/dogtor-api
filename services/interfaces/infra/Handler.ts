@@ -1,6 +1,5 @@
-import { HttpRequest } from '@azure/functions'
-import { CallbackFunction } from './Context'
+import { APIGatewayEvent, APIGatewayProxyCallback } from 'aws-lambda';
 
 export default interface Handler {
-    (callback: CallbackFunction, req: HttpRequest): Promise<any>;
+    (callback: APIGatewayProxyCallback, req: APIGatewayEvent): Promise<any>;
 }

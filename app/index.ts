@@ -1,16 +1,12 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions"
+import { Context, APIGatewayProxyCallback, APIGatewayEvent } from 'aws-lambda';
 import { openRoutes, routesMap } from "../services/routes";
 import Router from "./router"
-import { BindingContext } from "../services/interfaces/infra/Context";
 import * as dotenv from 'dotenv';
 import { Unauthorized } from "../utils/responses";
 
-const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
+export const handler = async (req: APIGatewayEvent, context: Context, callback: APIGatewayProxyCallback): Promise<void> => {
     dotenv.config()
     const app = new Router(routesMap, req)
-    function callback(ctx: BindingContext) {
-        context.res = ctx.res
-    }
 
     const controller = app.process()
     if (!openRoutes.includes(controller.name)) {
@@ -23,5 +19,3 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         await controller(callback, req)
     }
 };
-
-export default httpTrigger;

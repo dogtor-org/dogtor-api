@@ -1,11 +1,10 @@
-import { HttpRequest, HttpRequestHeaders } from '@azure/functions'
 import * as _ from "lodash"
-import { CallbackFunction } from '../../services/interfaces/infra/Context'
 import Handler from '../../services/interfaces/infra/Handler'
 import { UserRepository } from '../../services/repositories/UserRepository'
 import { Route } from '../../services/routes'
 import { BadRequest, InternalServerError, RouteNotFound, Unauthorized } from '../../utils/responses'
 import * as jwt from "jsonwebtoken"
+import { APIGatewayEvent, APIGatewayProxyCallback, APIGatewayProxyEventHeaders } from "aws-lambda"
 
 export type JwtPayload = {
     user_id: string
@@ -16,7 +15,7 @@ export default class Router {
 
     constructor(
         private routes: Map<Route, Handler>,
-        private req: HttpRequest
+        private req: APIGatewayEvent
     ) { }
 
     process(): Handler {
@@ -32,15 +31,15 @@ export default class Router {
         return controller
     }
 
-    parseRequest(req: HttpRequest): Route {
-        const url = req.url.split("/").splice(4)
+    parseRequest(req: APIGatewayEvent): Route {
+        const url = req.resource.split("/").splice(4)
         return {
-            method: req.method,
+            method: req.httpMethod,
             path: url.join("/"),
         }
     }
 
-    checkAuthorization = async (callback: CallbackFunction, { authorization }: HttpRequestHeaders): Promise<boolean> => {
+    checkAuthorization = async (callback: APIGatewayProxyCallback, { authorization }: APIGatewayProxyEventHeaders): Promise<boolean> => {
         return new Promise(async (resolve, reject) => {
             if (!authorization) return resolve(false)
 
