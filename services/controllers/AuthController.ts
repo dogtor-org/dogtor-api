@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import Handler from '../interfaces/infra/Handler'
 import { BadRequest, InternalServerError, StatusOk } from '../../utils/responses'
 import { UserRepository } from '../repositories/UserRepository'
-import { JwtPayload } from '../../app/router';
+import { JwtPayload } from '../../function/router';
 import { User } from '../interfaces/types';
 import { APIGatewayEvent, APIGatewayProxyCallback, APIGatewayProxyEventHeaders } from 'aws-lambda';
 
