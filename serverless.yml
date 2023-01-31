@@ -38,7 +38,7 @@ provider:
     DB_NAME: ${env:DB_NAME}
 
 functions:
-  dogtor-api:
+  handler:
     handler: app/index.handler
     events:
       - http:
