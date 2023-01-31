@@ -12,8 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
-      - run: npm install serverless -g
-      - run: npm install -d
+      - run: npm install -g serverless
+      - run: npm install --save-dev
       - name: Build ⚡️
         run: |
           npm run build
