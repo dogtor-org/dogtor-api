@@ -8,9 +8,7 @@
     "prestart": "npm run build",
     "start": "func start",
     "test": "echo 'todo'",
-    "dev": "nodemon --exec ts-node ./auth/index.ts",
-    "deploy-stack": "sls create-cert && sls create_domain --stage dev && sls deploy --verbose",
-    "remove-stack": "sls delete_domain --stage dev && sls remove"
+    "dev": "nodemon --exec ts-node ./auth/index.ts"
   },
   "dependencies": {
     "aws-lambda": "^1.0.7",
@@ -24,6 +22,8 @@
     "mysql2": "^3.0.1",
     "nodemon": "^2.0.20",
     "serverless": "^3.27.0",
+    "serverless-certificate-creator": "^1.6.0",
+    "serverless-domain-manager": "^6.2.1",
     "ts-node": "^10.9.1"
   },
   "devDependencies": {
