@@ -39,7 +39,7 @@ provider:
 
 functions:
   main-function:
-    handler: app/Handler.start
+    handler: function/Handler.start
     events:
       - http:
           path: /{any+}
