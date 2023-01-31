@@ -5,14 +5,15 @@ on:
       - main
 
 jobs:
+
   deploy-prd:
     name: 🤖 Deploy Code
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
-      - run: npm install serverless
-      - run: npm install
+      - run: npm install serverless -g
+      - run: npm install -d
       - name: Build ⚡️
         run: |
           npm run build
