@@ -8,6 +8,11 @@ export const start = async (req: APIGatewayEvent, context: Context, callback: AP
     dotenv.config()
     const app = new Router(routesMap, req)
 
+    console.log(`app: ${JSON.stringify(app)}`)
+    console.log(`req: ${JSON.stringify(req)}`)
+    console.log(`context: ${JSON.stringify(context)}`)
+    console.log(`callback: ${JSON.stringify(callback)}`)
+
     const controller = app.process()
     if (!openRoutes.includes(controller.name)) {
         if (await app.checkAuthorization(callback, req.headers)) {
