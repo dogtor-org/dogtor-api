@@ -38,7 +38,7 @@ provider:
     DB_NAME: ${env:DB_NAME}
 
 functions:
-  handler:
+  main-function:
     handler: app/Handler.start
     events:
       - http:
