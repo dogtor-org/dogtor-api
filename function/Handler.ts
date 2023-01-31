@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 import { Unauthorized } from "../utils/responses";
 import Router from './router';
 
-export const start = async (req: APIGatewayEvent, context: Context, callback: APIGatewayProxyCallback): Promise<void> => {
+export async function start(req: APIGatewayEvent, context: Context, callback: APIGatewayProxyCallback): Promise<void> {
     dotenv.config()
     const app = new Router(routesMap, req)
 

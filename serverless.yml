@@ -47,5 +47,6 @@ functions:
           cors: true
 
 plugins:
+  - serverless-plugin-typescript
   - serverless-domain-manager
   - serverless-certificate-creator
