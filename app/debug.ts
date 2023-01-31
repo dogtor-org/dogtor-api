@@ -1,5 +1,5 @@
 import { APIGatewayEvent, APIGatewayProxyCallback, Context } from 'aws-lambda';
-import { handler } from ".";
+import { start } from "./Handler";
 
 function load() {
     const req: APIGatewayEvent = {
@@ -42,5 +42,5 @@ function load() {
 
     const callback: APIGatewayProxyCallback = () => { }
 
-    handler(req, context, callback)
+    start(req, context, callback)
 } load()
