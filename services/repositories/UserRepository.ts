@@ -183,7 +183,6 @@ export class UserRepository {
                     hash_cpf,
                     email,
                     birth_date,
-                    address_id,
                     created_at,
                     updated_at,
                     active

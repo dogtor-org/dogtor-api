@@ -7,7 +7,6 @@ export interface DBUser extends RowDataPacket {
     hash_cpf: string;
     email: string;
     birth_date: string;
-    address_id: number;
     created_at: string;
     updated_at: string;
     active: boolean
