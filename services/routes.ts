@@ -11,11 +11,11 @@ export type Route = {
 // Unless you're targeting another function, then you must use the new "base path" as prefix
 export const auth: Route = {
     method: 'POST',
-    path: 'v1/auth',
+    path: '/auth',
 }
 export const registerUser: Route = {
     method: 'POST',
-    path: 'v1/user/register',
+    path: '/user/register',
 }
 
 /**

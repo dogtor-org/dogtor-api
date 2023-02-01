@@ -32,10 +32,9 @@ export default class Router {
     }
 
     parseRequest(req: APIGatewayEvent): Route {
-        const url = req.resource.split("/").splice(4)
         return {
             method: req.httpMethod,
-            path: url.join("/"),
+            path: req.path,
         }
     }
 

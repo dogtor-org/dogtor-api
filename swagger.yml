@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Doutor Consulta Pet
+  title: Dogtor
   description: |-
     // TODO
   version: 0.0.1
@@ -12,6 +12,8 @@ tags:
 servers:
   - url: http://localhost:7071/api/v1
     description: Local server
+  - url: https://dogtor.azurewebsites.net/api/v1/
+    description: Production server
     
 paths:
   /auth:
@@ -71,8 +73,10 @@ components:
       properties:
         email: 
           type: string
+          example: "email@example.com"
         password:
           type: string
+          example: "Password#01"
           
     Register:
       type: object
@@ -133,13 +137,13 @@ components:
       properties:
         uuid:
           type: string
-          example: ""
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
         fullName:
           type: string
-          example: ""
+          example: "Name Example"
         hashCpf:
           type: string
-          example: ""
+          example: "TODO"
         email:
           type: string
           example: "email@example.com"
