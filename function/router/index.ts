@@ -2,7 +2,7 @@ import * as _ from "lodash"
 import Handler from '../../services/interfaces/infra/Handler'
 import { UserRepository } from '../../services/repositories/UserRepository'
 import { Route } from '../../services/routes'
-import { InternalServerError, RouteNotFound, Unauthorized } from '../../utils/responses'
+import { InternalServerError, NotFound, Unauthorized } from '../../utils/responses'
 import * as jwt from "jsonwebtoken"
 import { APIGatewayEvent, APIGatewayProxyCallback, APIGatewayProxyEventHeaders } from "aws-lambda"
 
@@ -20,7 +20,7 @@ export default class Router {
 
     process(): Handler {
         const _req = this.parseRequest(this.req)
-        let controller: Handler = RouteNotFound
+        let controller: Handler = null
 
         this.routes.forEach((_controller: Handler, route: Route) => {
             if (_.isEqual(_req, route)) {
@@ -38,14 +38,14 @@ export default class Router {
         }
     }
 
-    checkAuthorization = async (callback: APIGatewayProxyCallback, { authorization }: APIGatewayProxyEventHeaders): Promise<boolean> => {
+    checkAuthorization = async ({ authorization }: APIGatewayProxyEventHeaders): Promise<boolean> => {
         return new Promise(async (resolve, reject) => {
             if (!authorization) return resolve(false)
 
             const token = authorization.split(" ")[1]
             const secret = process.env.JWT_SECRET
             if (!secret) {
-                return reject(InternalServerError(callback, "jwt secret not found"))
+                return reject(InternalServerError("jwt secret not found"))
             }
 
             const { user_uuid } = jwt.verify(token, secret) as JwtPayload
@@ -53,7 +53,7 @@ export default class Router {
             const userRepository = new UserRepository()
             const foundUser = await userRepository.getByUUID(user_uuid)
             if (!foundUser) {
-                return reject(Unauthorized(callback))
+                return reject(Unauthorized())
             }
 
             return resolve(true)

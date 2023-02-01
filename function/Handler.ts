@@ -1,7 +1,7 @@
-import { Context, APIGatewayProxyCallback, APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { Context, APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { openRoutes, routesMap } from "../services/routes";
 import * as dotenv from 'dotenv';
-import { Unauthorized } from "../utils/responses";
+import { NotFound, Unauthorized } from "../utils/responses";
 import Router from './router';
 
 export async function start(req: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> {
@@ -10,30 +10,14 @@ export async function start(req: APIGatewayEvent, context: Context): Promise<API
 
     console.log(`req: ${JSON.stringify(req)}`)
 
-    let response: APIGatewayProxyResult = {
-        statusCode: 424,
-        body: 'Missing Dependency',
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-        }
-    }
-
-    const callback: APIGatewayProxyCallback = (error?: string | Error, result?: APIGatewayProxyResult) => {
-        if (!error) {
-            response = result
-        }
-    }
-
     const controller = app.process()
     if (!openRoutes.includes(controller.name)) {
-        if (await app.checkAuthorization(callback, req.headers)) {
-            controller(callback, req)
+        if (await app.checkAuthorization(req.headers)) {
+            return await controller(req)
         } else {
-            Unauthorized(callback)
+            return Unauthorized()
         }
-    } else {
-        await controller(callback, req)
     }
 
-    return response
+    return await controller(req)
 };

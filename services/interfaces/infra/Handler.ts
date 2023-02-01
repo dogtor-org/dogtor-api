@@ -1,5 +1,5 @@
-import { APIGatewayEvent, APIGatewayProxyCallback } from 'aws-lambda';
+import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 
 export default interface Handler {
-    (callback: APIGatewayProxyCallback, req: APIGatewayEvent): Promise<any>;
+    (req: APIGatewayEvent): Promise<APIGatewayProxyResult>;
 }

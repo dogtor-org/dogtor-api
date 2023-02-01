@@ -1,7 +1,7 @@
 import { APIGatewayEvent, Context } from 'aws-lambda';
 import { start } from "./Handler";
 
-function load() {
+async function load() {
     const req = {
         body: JSON.stringify({
             "fullName": "Name Example",
@@ -25,5 +25,8 @@ function load() {
 
     const context: Context = null
 
-    start(req, context)
-} load()
+    const resp = await start(req, context)
+    console.log(JSON.stringify(resp))
+}
+
+load()
