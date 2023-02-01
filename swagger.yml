@@ -1,18 +1,14 @@
 openapi: 3.0.3
 info:
   title: Dogtor
-  description: |-
-    // TODO
-  version: 0.0.1
+  version: 1.0.0
 
 tags:
     - name: Auth
     - name: User
     
 servers:
-  - url: http://localhost:7071/api/v1
-    description: Local server
-  - url: https://dogtor.azurewebsites.net/api/v1/
+  - url: https://api.dogtor.store
     description: Production server
     
 paths:
