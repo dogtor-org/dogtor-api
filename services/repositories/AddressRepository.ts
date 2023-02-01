@@ -33,7 +33,10 @@ export class AddressRepository {
         return address
     }
 
-    insert(address: Address): Promise<number> {
+    insert(address: Address, extraFields: {
+        user_uuid?: string,
+        company_branch_uuid?: string,
+    }): Promise<number> {
         return new Promise(async (resolve, reject) => {
             this.conn.query<OkPacket>(
                 `INSERT INTO ${table}(
@@ -42,9 +45,14 @@ export class AddressRepository {
                     city,
                     street_name,
                     number,
-                    additional_info
+                    additional_info,
+
+                    user_uuid,
+                    company_branch_uuid
 
                 ) VALUES(
+                    ?,
+                    ?,
                     ?,
                     ?,
                     ?,
@@ -53,7 +61,7 @@ export class AddressRepository {
                     ?
                 )`,
 
-                [address.zipCode, address.country, address.city, address.streetName, address.number, address.additionalInfo],
+                [address.zipCode, address.country, address.city, address.streetName, address.number, address.additionalInfo, extraFields["user_uuid"], extraFields["company_branch_uuid"]],
 
                 (err, res) => {
                     if (err) reject(err);

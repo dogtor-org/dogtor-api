@@ -30,22 +30,11 @@ export class UserRepository {
             hashCpf: u.hash_cpf,
             email: u.email,
             birthDate: moment(u.birth_date),
-            address: {
-                id: u.address_id,
-                zipCode: 0,
-                country: '',
-                city: '',
-                streetName: '',
-                number: 0,
-                additionalInfo: ''
-            }
         }
         return user
     }
 
-    insert(user: Register, required: {
-        address_id: number,
-    }): Promise<void> {
+    insert(user: Register): Promise<number> {
         return new Promise(async (resolve, reject) => {
             const hashPassword = await bcrypt.hash(user.password, 10)
             const hashCpf = Buffer.from(user.cpf, 'base64')
@@ -57,7 +46,6 @@ export class UserRepository {
                     hash_cpf,
                     email,
                     birth_date,
-                    address_id,
                     hash_password
 
                 ) VALUES(
@@ -66,19 +54,14 @@ export class UserRepository {
                     ?,
                     ?,
                     ?,
-                    ?,
                     ?
                 )`,
 
-                [user.fullName, hashCpf, user.email, user.birthDate, required.address_id, hashPassword],
+                [user.fullName, hashCpf, user.email, user.birthDate, hashPassword],
 
                 (err, res) => {
                     if (err) reject(err);
-                    resolve()
-                    // else
-                    //     this.getByID(res.insertId)
-                    //         .then(user => resolve(user!))
-                    //         .catch(reject);
+                    resolve(res.insertId)
                 }
             )
         })
@@ -127,7 +110,6 @@ export class UserRepository {
                     hash_cpf,
                     email,
                     birth_date,
-                    address_id,
                     created_at,
                     updated_at,
                     active
@@ -151,7 +133,6 @@ export class UserRepository {
                     hash_cpf,
                     email,
                     birth_date,
-                    address_id,
                     created_at,
                     updated_at,
                     active
@@ -177,7 +158,6 @@ export class UserRepository {
                     hash_cpf,
                     email,
                     birth_date,
-                    address_id,
                     created_at,
                     updated_at,
                     active

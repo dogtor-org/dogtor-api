@@ -2,7 +2,7 @@ import * as _ from "lodash"
 import Handler from '../../services/interfaces/infra/Handler'
 import { UserRepository } from '../../services/repositories/UserRepository'
 import { Route } from '../../services/routes'
-import { BadRequest, InternalServerError, RouteNotFound, Unauthorized } from '../../utils/responses'
+import { InternalServerError, RouteNotFound, Unauthorized } from '../../utils/responses'
 import * as jwt from "jsonwebtoken"
 import { APIGatewayEvent, APIGatewayProxyCallback, APIGatewayProxyEventHeaders } from "aws-lambda"
 

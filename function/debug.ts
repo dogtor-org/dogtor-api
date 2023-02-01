@@ -1,46 +1,29 @@
-import { APIGatewayEvent, APIGatewayProxyCallback, Context } from 'aws-lambda';
+import { APIGatewayEvent, Context } from 'aws-lambda';
 import { start } from "./Handler";
 
 function load() {
-    const req: APIGatewayEvent = {
-        body: '',
-        headers: undefined,
-        multiValueHeaders: undefined,
-        httpMethod: '',
-        isBase64Encoded: false,
-        path: '',
-        pathParameters: undefined,
-        queryStringParameters: undefined,
-        multiValueQueryStringParameters: undefined,
-        stageVariables: undefined,
-        requestContext: undefined,
-        resource: ''
-    }
+    const req = {
+        body: JSON.stringify({
+            "fullName": "Name Example",
+            "birthDate": "2023-01-01",
+            "cpf": "01234567890",
+            "address": {
+                "zipCode": 262656,
+                "country": "Brazil",
+                "city": "Sao Paulo",
+                "streetName": "Praça da Sé",
+                "number": 50,
+                "additionalInfo": "Marco zero de Sao Paulo"
+            },
+            "email": "email@example.com",
+            "phoneNumber": "(11) 91234-5678",
+            "password": "Password#01"
+        }),
+        httpMethod: "POST",
+        path: "/user/register",
+    } as APIGatewayEvent
 
-    const context: Context = {
-        callbackWaitsForEmptyEventLoop: false,
-        functionName: '',
-        functionVersion: '',
-        invokedFunctionArn: '',
-        memoryLimitInMB: '',
-        awsRequestId: '',
-        logGroupName: '',
-        logStreamName: '',
-        getRemainingTimeInMillis: function (): number {
-            throw new Error('Function not implemented.');
-        },
-        done: function (error?: Error, result?: any): void {
-            throw new Error('Function not implemented.');
-        },
-        fail: function (error: string | Error): void {
-            throw new Error('Function not implemented.');
-        },
-        succeed: function (messageOrObject: any): void {
-            throw new Error('Function not implemented.');
-        }
-    }
+    const context: Context = null
 
-    const callback: APIGatewayProxyCallback = () => { }
-
-    start(req, context, callback)
+    start(req, context)
 } load()

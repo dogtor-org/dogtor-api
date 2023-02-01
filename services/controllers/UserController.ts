@@ -17,12 +17,17 @@ export const RegisterUser: Handler = async (callback: APIGatewayProxyCallback, r
             return reject(BadRequest(callback, "Email já cadastrado"))
         }
 
-        const address_id = await addressRepository.insert(user.address as Address)
+        const user_id = await userRepository.insert(user)
+        if (!user_id) {
+            return reject(BadRequest(callback, "couldn't insert user"))
+        }
+        const insertedUser = await userRepository.getByID(user_id)
+
+        const address_id = await addressRepository.insert(user.address as Address, { user_uuid: insertedUser.uuid })
         if (!address_id) {
             return reject(BadRequest(callback, "couldn't insert address"))
         }
 
-        await userRepository.insert(user, { address_id })
         resolve(NoContent(callback))
     })
 }

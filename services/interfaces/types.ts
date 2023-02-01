@@ -6,7 +6,7 @@ export type User = {
     hashCpf: string;
     email: string;
     birthDate: moment.Moment;
-    address: Address;
+    address?: Address;
 }
 
 export type Address = {
