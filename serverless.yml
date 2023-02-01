@@ -36,6 +36,7 @@ provider:
     DB_PASS: ${env:DB_PASS}
     DB_HOST: ${env:DB_HOST}
     DB_NAME: ${env:DB_NAME}
+    JWT_SECRET: ${env:JWT_SECRET}
 
 functions:
   main-function:
