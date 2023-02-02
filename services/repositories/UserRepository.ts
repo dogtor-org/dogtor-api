@@ -5,6 +5,7 @@ import { createConnection } from '../../libs/sql/connection';
 import * as bcrypt from "bcrypt"
 import * as moment from 'moment';
 import { Register } from '../interfaces/step';
+import { sha1 } from '../../utils/hash';
 
 const table = "tb_user"
 
@@ -37,7 +38,7 @@ export class UserRepository {
     insert(user: Register): Promise<number> {
         return new Promise(async (resolve, reject) => {
             const hashPassword = await bcrypt.hash(user.password, 10)
-            const hashCpf = Buffer.from(user.cpf, 'base64')
+            const hashCpf = sha1(user.cpf)
 
             this.conn.query<OkPacket>(
                 `INSERT INTO ${table}(
