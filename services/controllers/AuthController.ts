@@ -42,8 +42,9 @@ export const GetToken: Handler = async (req: APIGatewayEvent): Promise<APIGatewa
     })
 }
 
-export const getUser = async ({ authorization }: APIGatewayProxyEventHeaders): Promise<DBUser> => {
+export const getUser = async (headers: APIGatewayProxyEventHeaders): Promise<DBUser> => {
     const userRepository = new UserRepository()
+    const authorization = headers["authorization"] ?? headers["Authorization"]
     const { user_uuid } = jwt.verify(authorization.split(" ")[1], process.env.JWT_SECRET) as JwtPayload
 
     const user = await userRepository.getByUUID(user_uuid)

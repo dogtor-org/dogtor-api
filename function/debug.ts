@@ -1,4 +1,4 @@
-import { APIGatewayEvent, Context } from 'aws-lambda';
+import { APIGatewayEvent, Context, APIGatewayProxyEventHeaders } from 'aws-lambda';
 import { start } from "./Handler";
 
 async function load() {
@@ -21,6 +21,9 @@ async function load() {
         }),
         httpMethod: "GET",
         path: "/pet",
+        headers: {
+            "Authorization": "Bearer jwt-dev",
+        } as APIGatewayProxyEventHeaders
     } as APIGatewayEvent
 
     const context: Context = null
