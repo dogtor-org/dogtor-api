@@ -47,33 +47,45 @@ export default class Router {
 
     checkAuthorization = async (headers: APIGatewayProxyEventHeaders): Promise<boolean> => {
         return new Promise(async (resolve, reject) => {
-            if (headers === undefined) {
-                console.log("headers is undefined")
+            try {
+                if (headers === undefined) {
+                    console.log("headers is undefined")
+                    return resolve(false)
+                }
+
+                const authorization = headers["authorization"] ?? headers["Authorization"]
+                if (!authorization) {
+                    console.log("authorization not found")
+                    return resolve(false)
+                }
+
+                const token = authorization.split(" ")[1]
+                const secret = process.env.JWT_SECRET
+                if (!secret) {
+                    console.log("jwt secret not found")
+                    return resolve(false)
+                }
+
+                const { user_uuid } = jwt.verify(token, secret) as JwtPayload
+
+                const userRepository = new UserRepository()
+                const foundUser = await userRepository.getByUUID(user_uuid)
+                if (!foundUser) {
+                    return resolve(false)
+                }
+
+                return resolve(true)
+            } catch (err) {
+                switch (err["message"]) {
+                    case "invalid signature":
+                        console.log('invalid signature')
+                        break;
+                    default:
+                        console.log(JSON.stringify(err))
+                        break;
+                }
                 return resolve(false)
             }
-
-            const authorization = headers["authorization"] ?? headers["Authorization"]
-            if (!authorization) {
-                console.log("authorization not found")
-                return resolve(false)
-            }
-
-            const token = authorization.split(" ")[1]
-            const secret = process.env.JWT_SECRET
-            if (!secret) {
-                console.log("jwt secret not found")
-                return reject(false)
-            }
-
-            const { user_uuid } = jwt.verify(token, secret) as JwtPayload
-
-            const userRepository = new UserRepository()
-            const foundUser = await userRepository.getByUUID(user_uuid)
-            if (!foundUser) {
-                return reject(Unauthorized())
-            }
-
-            return resolve(true)
         })
     }
 }
