@@ -22,7 +22,6 @@ export class AddressRepository {
 
     parse(a: DBAddress): Address {
         const address: Address = {
-            id: a.address_id,
             zipCode: a.zip_code,
             country: a.country,
             city: a.city,

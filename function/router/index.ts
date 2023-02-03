@@ -18,17 +18,24 @@ export default class Router {
         private req: APIGatewayEvent
     ) { }
 
-    process(): Handler {
+    process(): {
+        controller: Handler,
+        found: boolean,
+    } {
         const _req = this.parseRequest(this.req)
-        let controller: Handler = null
+        let response = {
+            controller: {} as Handler,
+            found: false,
+        }
 
         this.routes.forEach((_controller: Handler, route: Route) => {
             if (_.isEqual(_req, route)) {
-                controller = _controller
+                response.controller = _controller
+                response.found = true
             }
         })
 
-        return controller
+        return response
     }
 
     parseRequest(req: APIGatewayEvent): Route {
@@ -38,8 +45,11 @@ export default class Router {
         }
     }
 
-    checkAuthorization = async ({ authorization }: APIGatewayProxyEventHeaders): Promise<boolean> => {
+    checkAuthorization = async (headers: APIGatewayProxyEventHeaders): Promise<boolean> => {
         return new Promise(async (resolve, reject) => {
+            if (headers === undefined) return resolve(false)
+
+            const { authorization } = headers
             if (!authorization) return resolve(false)
 
             const token = authorization.split(" ")[1]

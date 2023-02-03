@@ -68,10 +68,10 @@ export class UserRepository {
         })
     }
 
-    update(user: User, field: string, value: any): Promise<User> {
+    update(user: User, field: string, value: any): Promise<DBUser> {
         return new Promise((resolve, reject) => {
             this.conn.query<OkPacket>(
-                `UPDATE ${table} SET ${field} = ? WHERE user_uuid = ?`,
+                `UPDATE ${table} SET ${field} = ? WHERE user_uuid = ? AND active`,
 
                 [value, user.uuid],
 
@@ -89,7 +89,7 @@ export class UserRepository {
     remove(uuid: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this.conn.query<OkPacket>(
-                `DELETE FROM ${table} WHERE user_uuid = ?`,
+                `UPDATE ${table} SET active = false WHERE user_uuid = ?`,
 
                 [uuid],
 
@@ -101,7 +101,7 @@ export class UserRepository {
         })
     }
 
-    getAll(): Promise<User[]> {
+    getAll(): Promise<DBUser[]> {
         return new Promise((resolve, reject) => {
             this.conn.query<DBUser[]>(
                 `SELECT
@@ -115,16 +115,16 @@ export class UserRepository {
                     updated_at,
                     active
 
-                FROM ${table}`,
+                FROM ${table} WHERE active`,
 
                 (err, res) => {
                     if (err) reject(err)
-                    else resolve(this.parseAll(res))
+                    else resolve(res)
                 })
         })
     }
 
-    getByID(userID: number): Promise<User> {
+    getByID(userID: number): Promise<DBUser> {
         return new Promise((resolve, reject) => {
             this.conn.query<DBUser[]>(
                 `SELECT
@@ -138,18 +138,18 @@ export class UserRepository {
                     updated_at,
                     active
                 
-                FROM ${table} WHERE user_id = ?`,
+                FROM ${table} WHERE user_id = ? AND active`,
 
                 [userID],
 
                 (err, res) => {
                     if (err) reject(err)
-                    else resolve(this.parse(res?.[0]))
+                    else resolve(res?.[0])
                 })
         })
     }
 
-    getByUUID(uuid: string): Promise<User> {
+    getByUUID(uuid: string): Promise<DBUser> {
         return new Promise((resolve, reject) => {
             this.conn.query<DBUser[]>(
                 `SELECT
@@ -163,18 +163,18 @@ export class UserRepository {
                     updated_at,
                     active
                 
-                FROM ${table} WHERE user_uuid = ?`,
+                FROM ${table} WHERE user_uuid = ? AND active`,
 
                 [uuid],
 
                 (err, res) => {
                     if (err) reject(err)
-                    else resolve(this.parse(res?.[0]))
+                    else resolve(res?.[0])
                 })
         })
     }
 
-    getByEmail(email: string): Promise<User> {
+    getByEmail(email: string): Promise<DBUser> {
         return new Promise((resolve, reject) => {
             this.conn.query<DBUser[]>(
                 `SELECT
@@ -188,13 +188,13 @@ export class UserRepository {
                     updated_at,
                     active
                 
-                FROM ${table} WHERE email = ?`,
+                FROM ${table} WHERE email = ? AND active`,
 
                 [email],
 
                 (err, res) => {
                     if (err) reject(err)
-                    else resolve(this.parse(res?.[0]))
+                    else resolve(res?.[0])
                 })
         })
     }
@@ -209,7 +209,7 @@ export class UserRepository {
                 `SELECT
                     hash_password
 
-                FROM ${table} WHERE email = ?`,
+                FROM ${table} WHERE email = ? AND active`,
 
                 [email],
 
@@ -226,7 +226,7 @@ export class UserRepository {
                 `SELECT
                     user_id
 
-                FROM ${table} WHERE email = ?`,
+                FROM ${table} WHERE email = ? AND active`,
 
                 [email],
 

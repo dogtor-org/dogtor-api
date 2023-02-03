@@ -19,8 +19,8 @@ async function load() {
             "phoneNumber": "(11) 91234-5678",
             "password": "Password#01"
         }),
-        httpMethod: "POST",
-        path: "/user/register",
+        httpMethod: "GET",
+        path: "/pet",
     } as APIGatewayEvent
 
     const context: Context = null

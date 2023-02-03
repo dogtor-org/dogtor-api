@@ -5,11 +5,11 @@ import Handler from '../interfaces/infra/Handler'
 import { BadRequest, InternalServerError, StatusOk } from '../../utils/responses'
 import { UserRepository } from '../repositories/UserRepository'
 import { JwtPayload } from '../../function/router';
-import { User } from '../interfaces/types';
 import { APIGatewayEvent, APIGatewayProxyResult, APIGatewayProxyEventHeaders } from 'aws-lambda';
+import { DBUser } from '../interfaces/database';
 
 export const GetToken: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
         const { email, password } = JSON.parse(req.body)
         if (!email || !password) return resolve(BadRequest("no_email_or_password"))
 
@@ -35,18 +35,17 @@ export const GetToken: Handler = async (req: APIGatewayEvent): Promise<APIGatewa
         const TOKEN_EXPIRE_IN_DAYS = 1
 
         const token = jwt.sign({ ...user }, secret, { expiresIn: `${TOKEN_EXPIRE_IN_DAYS}d` })
-        resolve(StatusOk({
+        return resolve(StatusOk({
             token: token,
             expires_at: moment().add(TOKEN_EXPIRE_IN_DAYS, "days").toISOString(),
         }))
     })
 }
 
-export const getUser = async ({ authorization }: APIGatewayProxyEventHeaders): Promise<User> => {
-    return new Promise(async (resolve, reject) => {
-        const userRepository = new UserRepository()
-        const { user_uuid } = jwt.verify(authorization.split(" ")[1], process.env.JWT_SECRET) as JwtPayload
+export const getUser = async ({ authorization }: APIGatewayProxyEventHeaders): Promise<DBUser> => {
+    const userRepository = new UserRepository()
+    const { user_uuid } = jwt.verify(authorization.split(" ")[1], process.env.JWT_SECRET) as JwtPayload
 
-        return resolve(await userRepository.getByUUID(user_uuid))
-    })
+    const user = await userRepository.getByUUID(user_uuid)
+    return user
 }

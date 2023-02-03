@@ -7,10 +7,10 @@ export type User = {
     email: string;
     birthDate: moment.Moment;
     address?: Address;
+    cardInfo?: CardInfo;
 }
 
 export type Address = {
-    id: number;
     zipCode: number;
     country: string;
     city: string;
@@ -28,7 +28,6 @@ export type CardInfo = {
 }
 
 export type BankInfo = {
-    id: number;
     uuid: string;
     document: string;
     bankNumber: string;
@@ -39,7 +38,6 @@ export type BankInfo = {
 }
 
 export type Payment = {
-    id: number;
     uuid: string;
     paymentMethod: string;
     installments: number;
@@ -51,11 +49,10 @@ export type Payment = {
 }
 
 export type Pet = {
-    id: number;
     uuid: string;
-    userID: number;
+    userUUID: string;
     fullName: string;
-    birthDate: string;
+    birthDate: moment.Moment;
     size: number;
     weight: number;
     description: string;
@@ -64,18 +61,15 @@ export type Pet = {
 }
 
 export type Species = {
-    id: number;
     specie: string;
 }
 
 export type Races = {
-    id: number;
     race: string;
     specieID: number;
 }
 
 export type Company = {
-    id: number;
     uuid: string;
     document: string;
     corporateName: string;
@@ -85,7 +79,6 @@ export type Company = {
 }
 
 export type CompanyBranch = {
-    id: number;
     uuid: string;
     companyUUID: number;
     contactEmail: string;
@@ -94,7 +87,6 @@ export type CompanyBranch = {
 }
 
 export type Doctor = {
-    id: number;
     uuid: string;
     fullName: string;
     birthDate: string;
@@ -106,20 +98,17 @@ export type Doctor = {
 }
 
 export type Services = {
-    id: number;
     uuid: string;
     name: string;
 }
 
 export type DoctorServices = {
-    id: number;
     doctorID: number;
     serviceID: number;
     available: boolean;
 }
 
 export type Availability = {
-    id: number;
     doctorServiceID: number;
     startTime: string;
     endTime: string;
@@ -127,7 +116,6 @@ export type Availability = {
 }
 
 export type Appointment = {
-    id: number;
     uuid: string;
     petUUID: string;
     doctorUUID: string;
@@ -136,7 +124,6 @@ export type Appointment = {
 }
 
 export type Notification = {
-    id: number;
     uuid: string;
     companyUUID: string;
     info: string;

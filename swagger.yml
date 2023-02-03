@@ -6,6 +6,7 @@ info:
 tags:
     - name: Auth
     - name: User
+    - name: Pet
     
 servers:
   - url: https://api.dogtor.store
@@ -49,6 +50,91 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Register'
+      responses:
+        '201':
+          description: "No Content"
+          
+          
+  /pet:
+    get:
+      summary: Get all user pets
+      tags:
+        - Pet
+      responses:
+        '201':
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Pet"
+    post:
+      summary: Register new Pet
+      tags:
+        - Pet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+      responses:
+        '201':
+          description: "No Content"
+          
+  /pet/{pet_id}:
+    get:
+      summary: Get some Pet
+      tags:
+        - Pet
+      parameters:
+        - in: path
+          name: pet_id
+          schema:
+            type: string
+          required: true
+          description: UUID of the target pet
+      responses:
+        '200':
+          description: "Pet"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pet"
+
+    put:
+      summary: Update some Pet
+      tags:
+        - Pet
+      parameters:
+        - in: path
+          name: pet_id
+          schema:
+            type: string
+          required: true
+          description: UUID of the target pet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+      responses:
+        '201':
+          description: "No Content"
+          
+    delete:
+      summary: Delete some Pet
+      tags:
+        - Pet
+      parameters:
+        - in: path
+          name: pet_id
+          schema:
+            type: string
+          required: true
+          description: UUID of the target pet
       responses:
         '201':
           description: "No Content"
@@ -126,7 +212,7 @@ components:
         expires_at:
           type: string
           example: "2023-01-01 00:00:00"
-          
+
   #-----------------entities-------------------#
     User:
       type: object
@@ -139,7 +225,7 @@ components:
           example: "Name Example"
         hashCpf:
           type: string
-          example: "TODO"
+          example: "7ed10e4a589c87f9e6a85c22e4b0c38ecf5f5059"
         email:
           type: string
           example: "email@example.com"
@@ -156,6 +242,157 @@ components:
           properties:
             schema:
               $ref: "#/components/schemas/404NotFound"
+      
+    Address:
+      type: object
+      properties:
+        zipCode:
+          type: number
+          example: "01001-000"
+        country:
+          type: string
+          example: "Brazil"
+        city:
+          type: string
+          example: "Sao Paulo"
+        streetName:
+          type: string
+          example: "Praça da Sé"
+        number:
+          type: number
+          example: "50"
+        additionalInfo:
+          type: string
+          example: "Marco Zero de Sao Paulo"
+      
+    CardInfo:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        hashCpf:
+          type: string
+          example: "7ed10e4a589c87f9e6a85c22e4b0c38ecf5f5059"
+        cardNumber:
+          type: string
+          example: "1234 5678 9012 3456"
+        cardExpireDate:
+          type: string
+          example: "01/30"
+        cardFlag:
+          type: string
+          example: "Mastercard"
+    
+    BankInfo:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        document:
+          type: string
+          example: "01234567890"
+        bankNumber:
+          type: string
+          example: "0260"
+        agency:
+          type: string
+          example: "012345"
+        agencyDigit:
+          type: string
+          example: "6"
+        accountNumber:
+          type: string
+          example: "012345"
+        accountNumberDigit:
+          type: string
+          example: "6"
+
+    Payment:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        
+    Pet:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        
+    Species:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        
+    Races:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        
+    Company:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        
+    CompanyBranch:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        
+    Doctor:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        
+    Services:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        
+    DoctorServices:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        
+    Availability:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        
+    Appointment:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        
+    Notification:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        
         
   #-----------------responses-------------------#
     404NotFound:

@@ -14,6 +14,8 @@ export interface DBUser extends RowDataPacket {
 
 export interface DBAddress extends RowDataPacket {
     address_id: number;
+    user_uuid: string;
+    company_branch_uuid: string;
     zip_code: number;
     country: string;
     city: string;
@@ -70,7 +72,7 @@ export interface DBPayment extends RowDataPacket {
 export interface DBPet extends RowDataPacket {
     pet_id: number;
     pet_uuid: string;
-    user_id: number;
+    user_uuid: string;
     full_name: string;
     birth_date: string;
     size: number;
