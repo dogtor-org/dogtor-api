@@ -49,10 +49,19 @@ export default class Router {
         return new Promise(async (resolve, reject) => {
             console.log("checking authorization")
             console.log("headers: ", JSON.stringify(headers))
-            if (headers === undefined) return resolve(false)
+            if (headers === undefined) {
+                console.log("headers is undefined")
+                return resolve(false)
+            }
 
             const { authorization } = headers
-            if (!authorization) return resolve(false)
+            if (!authorization) {
+                console.log("authorization not found")
+                console.log(authorization)
+                const { Authorization } = headers
+                console.log(Authorization)
+                return resolve(false)
+            }
 
             console.log("auth: ", authorization)
             const token = authorization.split(" ")[1]
