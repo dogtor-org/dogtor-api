@@ -16,13 +16,15 @@ export async function start(req: APIGatewayEvent, context: Context): Promise<API
 
     const app = new Router(routesMap, req)
     const { controller, found } = app.process()
+    if (!found) return NotFound("Rota não encontrada")
 
-    if (found && !openRoutes.includes(controller.name)) {
-        if (await app.checkAuthorization(req.headers)) {
-            return await controller(req)
-        } else {
-            return Unauthorized()
-        }
+    if (openRoutes.includes(controller.name)) {
+        return await controller(req)
+    }
+
+    const isAuthenticated = await app.checkAuthorization(req.headers)
+    if (!isAuthenticated) {
+        return Unauthorized()
     }
 
     return await controller(req)
