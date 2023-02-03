@@ -43,10 +43,24 @@ export const GetToken: Handler = async (req: APIGatewayEvent): Promise<APIGatewa
 }
 
 export const getUser = async (headers: APIGatewayProxyEventHeaders): Promise<DBUser> => {
-    const userRepository = new UserRepository()
-    const authorization = headers["authorization"] ?? headers["Authorization"]
-    const { user_uuid } = jwt.verify(authorization.split(" ")[1], process.env.JWT_SECRET) as JwtPayload
+    try {
+        const userRepository = new UserRepository()
+        const authorization = headers["authorization"] ?? headers["Authorization"]
+        const { user_uuid } = jwt.verify(authorization.split(" ")[1], process.env.JWT_SECRET) as JwtPayload
 
-    const user = await userRepository.getByUUID(user_uuid)
-    return user
+        console.log(`searching for user_uuid: ${user_uuid}`)
+        const user = await userRepository.getByUUID(user_uuid)
+        return user
+    } catch (err) {
+        switch (err["message"]) {
+            case "invalid signature":
+                console.log('invalid signature')
+                break;
+            default:
+                console.log(JSON.stringify(err))
+                break;
+        }
+
+        return null
+    }
 }
