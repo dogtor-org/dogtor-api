@@ -47,28 +47,22 @@ export default class Router {
 
     checkAuthorization = async (headers: APIGatewayProxyEventHeaders): Promise<boolean> => {
         return new Promise(async (resolve, reject) => {
-            console.log("checking authorization")
-            console.log("headers: ", JSON.stringify(headers))
             if (headers === undefined) {
                 console.log("headers is undefined")
                 return resolve(false)
             }
 
-            const { authorization } = headers
+            const authorization = headers["authorization"] ?? headers["Authorization"]
             if (!authorization) {
                 console.log("authorization not found")
-                console.log(authorization)
-                const { Authorization } = headers
-                console.log(Authorization)
                 return resolve(false)
             }
 
-            console.log("auth: ", authorization)
             const token = authorization.split(" ")[1]
-            console.log("token:", token)
             const secret = process.env.JWT_SECRET
             if (!secret) {
-                return reject(InternalServerError("jwt secret not found"))
+                console.log("jwt secret not found")
+                return reject(false)
             }
 
             const { user_uuid } = jwt.verify(token, secret) as JwtPayload
