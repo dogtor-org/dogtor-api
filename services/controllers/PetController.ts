@@ -9,7 +9,6 @@ import { getUser } from './AuthController';
 export const GetAllPets: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
     const user = await getUser(req.headers)
     if (!user.active) {
-        console.log(`user not found: ${JSON.stringify(user)}`)
         return BadRequest("Usuário nao encontrado.")
     }
 
@@ -27,7 +26,9 @@ export const CreatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
     const pet = JSON.parse(req.body) as Pet
     const petRepository = new PetRepository()
 
-    pet.userUUID = (await getUser(req.headers)).uuid
+    const user = await getUser(req.headers)
+
+    pet.userUUID = user.user_uuid
     if (!pet.userUUID) {
         return BadRequest("Usuário nao encontrado.")
     }
