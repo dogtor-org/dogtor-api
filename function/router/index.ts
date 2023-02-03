@@ -52,7 +52,9 @@ export default class Router {
             const { authorization } = headers
             if (!authorization) return resolve(false)
 
+            console.log("auth: ", authorization)
             const token = authorization.split(" ")[1]
+            console.log("token:", token)
             const secret = process.env.JWT_SECRET
             if (!secret) {
                 return reject(InternalServerError("jwt secret not found"))
