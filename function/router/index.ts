@@ -47,6 +47,8 @@ export default class Router {
 
     checkAuthorization = async (headers: APIGatewayProxyEventHeaders): Promise<boolean> => {
         return new Promise(async (resolve, reject) => {
+            console.log("checking authorization")
+            console.log("headers: ", JSON.stringify(headers))
             if (headers === undefined) return resolve(false)
 
             const { authorization } = headers
