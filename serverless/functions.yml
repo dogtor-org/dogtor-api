@@ -32,20 +32,20 @@ getPet:
   handler: function/Handler.start
   events:
     - http:
-        path: /pet/:pet_id
+        path: /pet/{pet_id}
         method: GET
         cors: true
 updatePet:
   handler: function/Handler.start
   events:
     - http:
-        path: /pet/:pet_id
+        path: /pet/{pet_id}
         method: PUT
         cors: true
 deletePet:
   handler: function/Handler.start
   events:
     - http:
-        path: /pet/:pet_id
+        path: /pet/{pet_id}
         method: DELETE
         cors: true
