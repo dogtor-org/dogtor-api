@@ -29,15 +29,15 @@ export const insertPet: Route = {
 }
 export const getSomePet: Route = {
     method: 'GET',
-    path: '/pet/:pet_id',
+    path: '/pet/{pet_id}',
 }
 export const updateSomePet: Route = {
     method: 'PUT',
-    path: '/pet/:pet_id',
+    path: '/pet/{pet_id}',
 }
 export const deleteSomePet: Route = {
     method: 'DELETE',
-    path: '/pet/:pet_id',
+    path: '/pet/{pet_id}',
 }
 
 /**
