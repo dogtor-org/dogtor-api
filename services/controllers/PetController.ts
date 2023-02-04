@@ -88,7 +88,7 @@ export const GetPet: Handler = async (req: APIGatewayEvent): Promise<APIGatewayP
             return err
         }
 
-        const { uuid } = req.pathParameters
+        const { pet_id: uuid } = req.pathParameters
         if (!uuid) {
             return BadRequest("Campo de id nao pode ser vazio")
         }
@@ -107,7 +107,7 @@ export const UpdatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
             return err
         }
 
-        const { uuid } = req.pathParameters
+        const { pet_id: uuid } = req.pathParameters
         if (!uuid) {
             return BadRequest("Campo de id nao pode ser vazio")
         }
@@ -139,7 +139,7 @@ export const DeletePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
             return err
         }
 
-        const { uuid } = req.pathParameters
+        const { pet_id: uuid } = req.pathParameters
         if (!uuid) {
             return BadRequest("Campo de id nao pode ser vazio")
         }

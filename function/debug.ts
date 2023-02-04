@@ -1,4 +1,4 @@
-import { APIGatewayEvent, Context, APIGatewayProxyEventHeaders } from 'aws-lambda';
+import { APIGatewayEvent, Context, APIGatewayProxyEventHeaders, APIGatewayProxyEventPathParameters } from 'aws-lambda';
 import { start } from "./Handler";
 
 const authReq = {
@@ -32,8 +32,11 @@ const defaultRequest = {
         "specieID": 1,
         "raceID": 2,
     }),
-    httpMethod: "POST",
-    path: "/pet",
+    httpMethod: "DELETE",
+    path: "/pet/:pet_id",
+    pathParameters: {
+        "pet_id": "1fdcf85e-a436-11ed-9927-02272ccf360a"
+    } as APIGatewayProxyEventPathParameters,
     headers: {
         "Authorization": "Bearer jwt-dev",
     } as APIGatewayProxyEventHeaders
