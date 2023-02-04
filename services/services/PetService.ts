@@ -50,7 +50,6 @@ export class PetService {
     }
 
     async updatePet(newPet: Pet): Promise<APIGatewayProxyResult> {
-        newPet.userID = this.user.user_id
         await this.repo.update(newPet)
 
         return NoContent()

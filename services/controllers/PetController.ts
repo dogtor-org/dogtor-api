@@ -114,7 +114,7 @@ export const UpdatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
 
         let body = JSON.parse(req.body)
         let pet: Pet = {
-            uuid,
+            uuid: uuid,
             fullName: body.fullName,
             birthDate: body.birthDate,
             size: body.size,

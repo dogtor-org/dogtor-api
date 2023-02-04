@@ -88,7 +88,7 @@ export class PetRepository {
 
                 WHERE pet_uuid = ? AND active`,
 
-                [pet.fullName, pet.birthDate, pet.size, pet.weight, pet.specieID, pet.raceID, pet.uuid],
+                [pet.fullName, pet.birthDate, pet.size, pet.weight, pet.description, pet.specieID, pet.raceID, pet.uuid],
 
                 (err, res) => {
                     if (err) throw err;
