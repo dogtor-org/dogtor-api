@@ -3,6 +3,7 @@ import { Pet } from '../interfaces/types';
 import { OkPacket, Connection } from 'mysql2';
 import { createConnection } from '../../libs/sql/connection';
 import * as moment from 'moment';
+import { BadRequest } from '../../utils/responses';
 
 const table = "tb_pet"
 
@@ -24,7 +25,7 @@ export class PetRepository {
     parse(p: DBPet): Pet {
         const Pet: Pet = {
             uuid: p.pet_uuid,
-            userUUID: p.user_uuid,
+            userID: p.user_uuid,
             fullName: p.full_name,
             birthDate: moment(p.birth_date),
             size: p.size,
@@ -38,12 +39,13 @@ export class PetRepository {
 
     insert(pet: Pet): Promise<number> {
         return new Promise(async (resolve, reject) => {
+            const birth = pet.birthDate.format("YYYY MM DD")
             this.conn.query<OkPacket>(
                 `INSERT INTO ${table}(
                     pet_uuid,
-                    user_uuid,
-                    full_name,
                     birth_date,
+                    user_id,
+                    full_name,
                     size,
                     weight,
                     description,
@@ -52,20 +54,20 @@ export class PetRepository {
 
                 ) VALUES(
                     UUID(),
+                    STR_TO_DATE(?, "%Y %m %d"),
                     ?,
                     ?,
                     ?,
                     ?,
                     ?,
                     ?,
-                    ?,
-                    s?,
+                    ?
                     )`,
 
-                [pet.userUUID, pet.fullName, pet.birthDate, pet.size, pet.weight, pet.description, pet.specieID, pet.raceID],
+                [birth, pet.userID, pet.fullName, pet.size, pet.weight, pet.description, pet.specieID, pet.raceID],
 
                 (err, res) => {
-                    if (err) reject(err);
+                    if (err) throw err;
                     resolve(res.insertId)
                 }
             )

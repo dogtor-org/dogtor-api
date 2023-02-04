@@ -46,6 +46,7 @@ export const getUser = async (headers: APIGatewayProxyEventHeaders): Promise<DBU
     try {
         const userRepository = new UserRepository()
         const authorization = headers["authorization"] ?? headers["Authorization"]
+
         const { user_uuid } = jwt.verify(authorization.split(" ")[1], process.env.JWT_SECRET) as JwtPayload
 
         console.log(`searching for user_uuid: ${user_uuid}`)

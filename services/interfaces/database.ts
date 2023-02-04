@@ -72,7 +72,7 @@ export interface DBPayment extends RowDataPacket {
 export interface DBPet extends RowDataPacket {
     pet_id: number;
     pet_uuid: string;
-    user_uuid: string;
+    user_id: number;
     full_name: string;
     birth_date: string;
     size: number;

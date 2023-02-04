@@ -78,7 +78,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/NewPet'
       responses:
         '201':
           description: "No Content"
@@ -315,6 +315,52 @@ components:
         uuid:
           type: string
           example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        paymentMethod:
+          type: string
+          example: ""
+        installments: 
+          type: number
+          example: 1
+        installmentDueDate:
+          type: number
+          example: 1
+        billTotal:
+          type: number
+          example: 100.00
+        doctorUUID:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        petUUID:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        userUUID:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+
+    NewPet:
+      type: object
+      properties:
+        fullName:
+          type: string
+          example: "Name Example"
+        birthDate:
+          type: string
+          example: "YYYY-MM-DDTHH:mm:ss.sssZ"
+        size:
+          type: number
+          example: 10.0
+        weight:
+          type: number
+          example: 10.0
+        description:
+          type: string
+          example: "Lorem Ipsum"
+        specieID:
+          type: number
+          example: 10
+        raceID:
+          type: number
+          example: 10
         
     Pet:
       type: object
@@ -322,20 +368,47 @@ components:
         uuid:
           type: string
           example: "8857fc83-9b59-11ed-be3f-0242ac110002"
-        
+        userUUID:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        fullName:
+          type: string
+          example: "Name Example"
+        birthDate:
+          type: string
+          example: "YYYY-MM-DDTHH:mm:ss.sssZ"
+        size:
+          type: number
+          example: 10.0
+        weight:
+          type: number
+          example: 10.0
+        description:
+          type: string
+          example: "Lorem Ipsum"
+        specieID:
+          type: number
+          example: 10
+        raceID:
+          type: number
+          example: 10
+
     Species:
       type: object
       properties:
-        uuid:
+        specie:
           type: string
-          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+          example: "Lorem Ipsum"
         
     Races:
       type: object
       properties:
-        uuid:
+        race:
           type: string
-          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+          example: "Lorem Ipsum"
+        specieID:
+          type: number
+          example: 10
         
     Company:
       type: object
@@ -343,11 +416,38 @@ components:
         uuid:
           type: string
           example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        document:
+          type: string
+          example: "00.000.000/0001-00"
+        corporateName:
+          type: string
+          example: "Corporate Name ltda"
+        socialName:
+          type: string
+          example: "Corporate Social Name"
+        contactEmail:
+          type: string
+          example: "contact@email.com"
+        contactNumber:
+          type: string
+          example: "(00) 0000-0000"
         
     CompanyBranch:
       type: object
       properties:
         uuid:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        companyUUID:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        contactEmail:
+          type: string
+          example: "contact_branch@email.com"
+        contactNumber:
+          type: string
+          example: "(00) 90000-0000"
+        bankInfoUUID:
           type: string
           example: "8857fc83-9b59-11ed-be3f-0242ac110002"
         
@@ -357,42 +457,94 @@ components:
         uuid:
           type: string
           example: "8857fc83-9b59-11ed-be3f-0242ac110002"
-        
+        fullName:
+          type: string
+          example: "Name Example"
+        birthDate:
+          type: string
+          example: "YYYY-MM-DDTHH:mm:ss.sssZ"
+        contactEmail:
+          type: string
+          example: "contact@email.com"
+        contactNumber:
+          type: string
+          example: "(00) 90000-0000"
+        expertise:
+          type: string
+          example: "Expertise Example"
+        description:
+          type: string
+          example: "Lorem Ipsum"
+        companyBranchUUID:
+          type: string
+          example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+          
     Services:
       type: object
       properties:
         uuid:
           type: string
           example: "8857fc83-9b59-11ed-be3f-0242ac110002"
+        name:
+          type: string
+          example: "Lorem Ipsum"
         
     DoctorServices:
       type: object
       properties:
-        uuid:
+        doctorUUID:
           type: string
           example: "8857fc83-9b59-11ed-be3f-0242ac110002"
-        
-    Availability:
+        serviceID:
+          type: number
+          example: 10
+        available:
+          type: boolean
+          example: false
+  
+  # Event is an abreviation of appointment and availabillity structs
+    Event:
       type: object
       properties:
-        uuid:
+        times:
+          type: array
+          items:
+            type: object
+            properties:
+              doctorServiceID:
+                type: number
+                example: 10
+              startTime:
+                type: string
+                example: "YYYY-MM-DDTHH:mm:ss.sssZ"
+              endTime:
+                type: string
+                example: "YYYY-MM-DDTHH:mm:ss.sssZ"
+        doctorUUID:
           type: string
           example: "8857fc83-9b59-11ed-be3f-0242ac110002"
-        
-    Appointment:
-      type: object
-      properties:
-        uuid:
+        petUUID:
           type: string
           example: "8857fc83-9b59-11ed-be3f-0242ac110002"
-        
+
     Notification:
       type: object
       properties:
         uuid:
           type: string
           example: "8857fc83-9b59-11ed-be3f-0242ac110002"
-        
+        companyUUID:
+          type: string
+          example: ""
+        info:
+          type: string
+          example: "Lorem Ipsum"
+        expiresAt:
+          type: string
+          example: "YYYY-MM-DDTHH:mm:ss.sssZ"
+        delivered:
+          type: boolean
+          example: false
         
   #-----------------responses-------------------#
     404NotFound:

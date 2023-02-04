@@ -179,7 +179,7 @@ CREATE TABLE tb_doctor (
     contact_number VARCHAR(45) NOT NULL,
     expertise VARCHAR(255) NOT NULL,
     description LONGTEXT NOT NULL,
-    company_branch_id INT NOT NULL,
+    company_branch_uuid VARCHAR(36) NOT NULL,
     --
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -203,9 +203,8 @@ CREATE TABLE tb_doctor_services (
     doctor_services_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     doctor_services_uuid VARCHAR(36) NOT NULL,
     --
-    doctor_id INT NOT NULL,
+    doctor_uuid VARCHAR(36) NOT NULL,
     service_id INT NOT NULL,
-    available BOOLEAN NOT NULL,
     --
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -215,11 +214,13 @@ CREATE TABLE tb_doctor_services (
 /* CREATE TABLE AVAILABILLITY */
 CREATE TABLE tb_availabillity (
     availabillity_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    availabillity_uuid VARCHAR(36) NOT NULL,
     --
     doctor_service_id INT NOT NULL,
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP NOT NULL,
     appointment_id INT NOT NULL,
+    available BOOLEAN NOT NULL,
     --
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -234,7 +235,6 @@ CREATE TABLE tb_appointment (
     pet_uuid VARCHAR(36) NOT NULL,
     doctor_uuid VARCHAR(36) NOT NULL,
     notification_uuid VARCHAR(36) NOT NULL,
-    timestamp TIMESTAMP NOT NULL,
     --
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -19,3 +19,13 @@ export type Register = {
     phoneNumber: string;
     password: string;
 }
+
+export type NewPet = {
+    fullName: string;
+    birthDate: string;
+    size: number;
+    weight: number;
+    description: string;
+    specieID: number;
+    raceID: number;
+}

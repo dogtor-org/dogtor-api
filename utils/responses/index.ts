@@ -35,9 +35,9 @@ export function NotFound(data: any): APIGatewayProxyResult {
     }
 }
 
-export function InternalServerError(data: any): APIGatewayProxyResult {
+export function InternalServerError(data?: any): APIGatewayProxyResult {
     return {
         statusCode: 502,
-        body: JSON.stringify(data)
+        body: data ? JSON.stringify(data) : "No momento estamos passando por instabilidade. Por favor, tente novamente mais tarde!"
     }
 }

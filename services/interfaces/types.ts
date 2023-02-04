@@ -50,7 +50,7 @@ export type Payment = {
 
 export type Pet = {
     uuid: string;
-    userUUID: string;
+    userID: number;
     fullName: string;
     birthDate: moment.Moment;
     size: number;
@@ -80,7 +80,7 @@ export type Company = {
 
 export type CompanyBranch = {
     uuid: string;
-    companyUUID: number;
+    companyUUID: string;
     contactEmail: string;
     contactNumber: string;
     bankInfoUUID: string;
@@ -94,7 +94,7 @@ export type Doctor = {
     contactNumber: string;
     expertise: string;
     description: string;
-    companyBranchID: number;
+    companyBranchUUID: string;
 }
 
 export type Services = {
@@ -103,24 +103,21 @@ export type Services = {
 }
 
 export type DoctorServices = {
-    doctorID: number;
-    serviceID: number;
-    available: boolean;
-}
-
-export type Availability = {
-    doctorServiceID: number;
-    startTime: string;
-    endTime: string;
-    appointmentID: number;
-}
-
-export type Appointment = {
-    uuid: string;
-    petUUID: string;
     doctorUUID: string;
-    notificationUUID: string;
-    timestamp: string;
+    serviceID: number;
+}
+
+export type Event = {
+    times: [
+        {
+            doctorServiceID: number;
+            startTime: string;
+            endTime: string;
+        }
+    ]
+
+    doctorUUID: string;
+    petUUID: string;
 }
 
 export type Notification = {
