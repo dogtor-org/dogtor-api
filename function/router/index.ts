@@ -41,7 +41,7 @@ export default class Router {
     parseRequest(req: APIGatewayEvent): Route {
         return {
             method: req.httpMethod,
-            path: req.path,
+            path: req.resource,
         }
     }
 

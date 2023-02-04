@@ -17,7 +17,7 @@ export async function start(req: APIGatewayEvent, context: Context): Promise<API
     const app = new Router(routesMap, req)
     const { controller, found } = app.process()
     if (!found) {
-        console.log(`route: ${req.path}`)
+        console.log(`route: ${req.resource}`)
         return NotFound("Rota não encontrada")
     }
 

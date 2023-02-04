@@ -38,14 +38,7 @@ provider:
     DB_NAME: ${env:DB_NAME}
     JWT_SECRET: ${env:JWT_SECRET}
 
-functions:
-  main-function:
-    handler: function/Handler.start
-    events:
-      - http:
-          path: /{any+}
-          method: ANY
-          cors: true
+functions: ${file(./serverless/functions.yml)}
 
 plugins:
   - serverless-plugin-typescript

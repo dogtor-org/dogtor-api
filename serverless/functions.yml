@@ -1,0 +1,51 @@
+auth:
+  handler: function/Handler.start
+  events:
+    - http:
+        path: /auth
+        method: POST
+        cors: true
+register:
+  handler: function/Handler.start
+  events:
+    - http:
+        path: /user/register
+        method: POST
+        cors: true
+
+####### PET ########
+getAllPets:
+  handler: function/Handler.start
+  events:
+    - http:
+        path: /pet
+        method: GET
+        cors: true
+insertPet:
+  handler: function/Handler.start
+  events:
+    - http:
+        path: /pet
+        method: POST
+        cors: true
+getPet:
+  handler: function/Handler.start
+  events:
+    - http:
+        path: /pet/:pet_id
+        method: GET
+        cors: true
+updatePet:
+  handler: function/Handler.start
+  events:
+    - http:
+        path: /pet/:pet_id
+        method: PUT
+        cors: true
+deletePet:
+  handler: function/Handler.start
+  events:
+    - http:
+        path: /pet/:pet_id
+        method: DELETE
+        cors: true
