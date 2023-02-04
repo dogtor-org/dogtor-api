@@ -23,6 +23,19 @@ async function getSvc(req: APIGatewayEvent): Promise<{ svc: PetService; err: API
     }
 }
 
+function translate(key: string): string {
+    switch (key) {
+        case "fullName": return "Nome";
+        case "birthDate": return "Data de nascimento";
+        case "size": return "Tamanho";
+        case "weight": return "Peso";
+        case "description": return "Descrição";
+        case "specieID": return "espécie";
+        case "raceID": return "raça";
+        default: return key;
+    }
+}
+
 export const GetAllPets: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
     try {
         const { svc, err } = await getSvc(req)
@@ -57,7 +70,7 @@ export const CreatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
 
         for (const key of Object.keys(payload)) {
             if (!payload[key]) {
-                return BadRequest(`O campo ${key} é obrigatório.`)
+                return BadRequest(`O campo ${translate(key)} é obrigatório.`)
             }
         }
 
