@@ -68,27 +68,33 @@ export class PetRepository {
 
                 (err, res) => {
                     if (err) throw err;
-                    resolve(res.insertId)
+                    else resolve(res.insertId)
                 }
             )
         })
     }
 
-    update(pet: Pet, field: string, value: any): Promise<DBPet> {
+    update(pet: Pet): Promise<DBPet> {
         return new Promise((resolve, reject) => {
             this.conn.query<OkPacket>(
-                `UPDATE ${table} SET ${field} = ? WHERE pet_uuid = ? AND active`,
+                `UPDATE ${table} SET 
+                    full_name = ?
+                    ,birth_date = ?
+                    ,size = ?
+                    ,weight = ?
+                    ,description = ?
+                    ,specie_id = ?
+                    ,race_id = ?
 
-                [value, pet.uuid],
+                WHERE pet_uuid = ? AND active`,
+
+                [pet.fullName, pet.birthDate, pet.size, pet.weight, pet.specieID, pet.raceID, pet.uuid],
 
                 (err, res) => {
-                    try {
-                        this.getByUUID(pet.uuid)
-                            .then(resolve)
-                            .catch(reject)
-                    } catch (err) {
-                        console.log(err)
-                    }
+                    if (err) throw err;
+                    this.getByUUID(pet.uuid)
+                        .then(resolve)
+                        .catch(reject)
                 }
             )
         })
@@ -102,7 +108,7 @@ export class PetRepository {
                 [uuid],
 
                 (err, res) => {
-                    if (err) reject(false)
+                    if (err) throw err
                     else resolve(true)
                 }
             )
@@ -130,7 +136,7 @@ export class PetRepository {
                 FROM ${table} WHERE active`,
 
                 (err, res) => {
-                    if (err) reject(err)
+                    if (err) throw err
                     else resolve(res)
                 })
         })
@@ -159,7 +165,7 @@ export class PetRepository {
                 [petID],
 
                 (err, res) => {
-                    if (err) reject(err)
+                    if (err) throw err
                     else resolve(res?.[0])
                 })
         })
@@ -188,7 +194,7 @@ export class PetRepository {
                 [uuid],
 
                 (err, res) => {
-                    if (err) reject(err)
+                    if (err) throw err
                     else resolve(res?.[0])
                 })
         })
@@ -217,7 +223,7 @@ export class PetRepository {
                 [user_id],
 
                 (err, res) => {
-                    if (err) reject(err)
+                    if (err) throw err
                     else resolve(res)
                 })
         })

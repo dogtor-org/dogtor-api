@@ -11,7 +11,7 @@ export async function start(req: APIGatewayEvent, context: Context): Promise<API
     const { ok, err } = validateRoutes(routesMap)
     if (!ok) {
         console.log("Invalid routes map, duplicated entry found: " + err)
-        return InternalServerError("Estamos passando por instabilidade. Por favor, tente novamente mais tarde!")
+        return InternalServerError()
     }
 
     const app = new Router(routesMap, req)

@@ -51,10 +51,7 @@ export class PetService {
 
     async updatePet(newPet: Pet): Promise<APIGatewayProxyResult> {
         newPet.userID = this.user.user_id
-
-        for (const [key, value] of Object.keys(newPet)) {
-            await this.repo.update(newPet, key, value)
-        }
+        await this.repo.update(newPet)
 
         return NoContent()
     }
