@@ -1,18 +1,3 @@
-auth:
-  handler: function/Handler.start
-  events:
-    - http:
-        path: /auth
-        method: POST
-        cors: true
-register:
-  handler: function/Handler.start
-  events:
-    - http:
-        path: /user/register
-        method: POST
-        cors: true
-
 ####### PET ########
 getAllPets:
   handler: function/Handler.start

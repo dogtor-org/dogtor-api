@@ -1,14 +1,14 @@
 import Handler from '../interfaces/infra/Handler'
-import { PetService } from './../services/PetService';
 import { InternalServerError } from './../../utils/responses/index';
-import { PetRepository } from './../repositories/PetRepository';
-import { Pet } from './../interfaces/types';
 import { BadRequest } from '../../utils/responses'
 import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { getUser } from './AuthController';
-import { NewPet } from '../interfaces/step';
+import { CardInfoRepository } from '../repositories/CardInfoRepository';
+import { CardInfoService } from '../services/CardInfoService';
+import { CardInfo } from '../interfaces/types';
+import { NewCardInfo } from '../interfaces/step';
 
-async function getSvc(req: APIGatewayEvent): Promise<{ svc: PetService; err: APIGatewayProxyResult; }> {
+async function getSvc(req: APIGatewayEvent): Promise<{ svc: CardInfoService; err: APIGatewayProxyResult; }> {
     const user = await getUser(req.headers)
     if (!user.active) {
         return {
@@ -16,41 +16,39 @@ async function getSvc(req: APIGatewayEvent): Promise<{ svc: PetService; err: API
             err: BadRequest("Usuário nao encontrado.")
         }
     }
-    const petRepository = new PetRepository()
+    const cardInfoRepository = new CardInfoRepository()
     return {
-        svc: new PetService(user, petRepository),
+        svc: new CardInfoService(user, cardInfoRepository),
         err: null,
     }
 }
 
 function translate(key: string): string {
     switch (key) {
-        case "fullName": return "Nome";
-        case "birthDate": return "Data de nascimento";
-        case "size": return "Tamanho";
-        case "weight": return "Peso";
-        case "description": return "Descrição";
-        case "specieID": return "espécie";
-        case "raceID": return "raça";
+        case "uuid": return "id"
+        case "hashCpf": return "cpf"
+        case "cardNumber": return "número do cartão"
+        case "cardExpireDate": return "data de expiração"
+        case "cardFlag": return "bandeira do cartão"
         default: return key;
     }
 }
 
-export const GetAllPets: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+export const GetAllCards: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
     try {
         const { svc, err } = await getSvc(req)
         if (err !== null) {
             return err
         }
 
-        return await svc.getAllByUserID()
+        return await svc.getAllByUserUUID()
     } catch (err) {
         console.log(JSON.stringify(err))
         return InternalServerError()
     }
 }
 
-export const CreatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+export const CreateCard: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
     try {
         const { svc, err } = await getSvc(req)
         if (err !== null) {
@@ -58,14 +56,11 @@ export const CreatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
         }
 
         let body = JSON.parse(req.body)
-        let payload: NewPet = {
-            fullName: body.fullName,
-            birthDate: body.birthDate,
-            size: body.size,
-            weight: body.weight,
-            description: body.description,
-            specieID: body.specieID,
-            raceID: body.raceID,
+        let payload: NewCardInfo = {
+            cpf: body.cpf,
+            cardNumber: body.cardNumber,
+            cardExpireDate: body.cardExpireDate,
+            cardFlag: body.cardFlag,
         };
 
         for (const key of Object.keys(payload)) {
@@ -74,53 +69,50 @@ export const CreatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
             }
         }
 
-        return await svc.createPet(payload)
+        return await svc.createCard(payload)
     } catch (err) {
         console.log(JSON.parse(err))
         return InternalServerError()
     }
 }
 
-export const GetPet: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+export const GetCard: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
     try {
         const { svc, err } = await getSvc(req)
         if (err !== null) {
             return err
         }
 
-        const { pet_id: uuid } = req.pathParameters
+        const { card_info_id: uuid } = req.pathParameters
         if (!uuid) {
             return BadRequest("Campo de id nao pode ser vazio")
         }
 
-        return await svc.getPet(uuid)
+        return await svc.getCardInfo(uuid)
     } catch (err) {
         console.log(JSON.parse(err))
         return InternalServerError()
     }
 }
 
-export const UpdatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+export const UpdateCard: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
     try {
         const { svc, err } = await getSvc(req)
         if (err !== null) {
             return err
         }
 
-        const { pet_id: uuid } = req.pathParameters
+        const { card_info_id: uuid } = req.pathParameters
         if (!uuid) {
             return BadRequest("Campo de id nao pode ser vazio")
         }
 
         let body = JSON.parse(req.body)
-        let payload: NewPet = {
-            fullName: body.fullName,
-            birthDate: body.birthDate,
-            size: body.size,
-            weight: body.weight,
-            description: body.description,
-            specieID: body.specieID,
-            raceID: body.raceID,
+        let payload: NewCardInfo = {
+            cpf: body.cpf,
+            cardNumber: body.cardNumber,
+            cardExpireDate: body.cardExpireDate,
+            cardFlag: body.cardFlag,
         };
 
         for (const key of Object.keys(payload)) {
@@ -129,26 +121,26 @@ export const UpdatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
             }
         }
 
-        return await svc.updatePet(payload, uuid)
+        return await svc.updateCardInfo(payload, uuid)
     } catch (err) {
         console.log(JSON.parse(err))
         return InternalServerError()
     }
 }
 
-export const DeletePet: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+export const DeleteCard: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
     try {
         const { svc, err } = await getSvc(req)
         if (err !== null) {
             return err
         }
 
-        const { pet_id: uuid } = req.pathParameters
+        const { card_info_id: uuid } = req.pathParameters
         if (!uuid) {
             return BadRequest("Campo de id nao pode ser vazio")
         }
 
-        return await svc.deletePet(uuid)
+        return await svc.deleteCardInfo(uuid)
     } catch (err) {
         console.log(JSON.parse(err))
         return InternalServerError()
