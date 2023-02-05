@@ -28,7 +28,7 @@ export class UserService {
             ...user.address,
         }
 
-        const address_id = await this.addressRepo.insert(address, { user_uuid: insertedUser.uuid })
+        const address_id = await this.addressRepo.insert(address, { user_uuid: insertedUser.user_uuid })
         if (!address_id) {
             console.log("couldn't insert address")
             return InternalServerError()
