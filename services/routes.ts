@@ -84,21 +84,3 @@ export const routesMap = new Map<Route, Handler>([
     [updateSomeCard, CardInfoController.UpdateCard],
     [deleteSomeCard, CardInfoController.DeleteCard],
 ])
-
-export function validateRoutes(map: Map<Route, Handler>): { ok: boolean, err: string } {
-    const valuesSoFar: Route[] = []
-    map.forEach((value, key) => {
-        if (valuesSoFar.includes(key)) {
-            return {
-                ok: false,
-                err: key
-            }
-        }
-        valuesSoFar.push(key)
-    })
-
-    return {
-        ok: true,
-        err: "",
-    }
-}

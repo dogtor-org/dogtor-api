@@ -1,24 +1,22 @@
 import moment = require("moment")
 
+type unix = number
 export default class Clock {
-    constructor() { }
+    private static current_clocks: Map<string, unix> = new Map<string, unix>();
 
-    start(eventName: string): () => { event_name: string, started_at: number } {
-        const event_name = eventName
-        const started_at = moment().unix()
-        return () => {
-            return {
-                event_name,
-                started_at,
-            }
-        }
+    static start(eventName: string) {
+        this.current_clocks.set(eventName, moment().valueOf())
+        console.log(`[clock] started ${eventName}`)
     }
 
-    end(start: () => { event_name: string, started_at: number }) {
-        const { event_name, started_at } = start()
+    static end(eventName: string) {
+        const started_at = this.current_clocks.get(eventName)
+        if (started_at === 0) {
+            return console.log(`[clock] event name ${eventName} not found`)
+        }
+
         const time = moment(started_at)
-        const now = moment().unix()
-        // TODO fix
-        console.log(`[clock] ended ${event_name} with ${time.diff(now, "milliseconds")}ms`)
+        const now = moment().valueOf()
+        console.log(`[clock] ended ${eventName} with ${time.diff(now, "seconds", true)}s`)
     }
 }

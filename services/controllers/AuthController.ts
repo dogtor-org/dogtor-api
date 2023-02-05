@@ -9,37 +9,43 @@ import { APIGatewayEvent, APIGatewayProxyResult, APIGatewayProxyEventHeaders } f
 import { DBUser } from '../interfaces/database';
 
 export const GetToken: Handler = async (req: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
-    return new Promise(async (resolve, reject) => {
+    try {
         const { email, password } = JSON.parse(req.body)
-        if (!email || !password) return resolve(BadRequest("no_email_or_password"))
-
-        const userRepository = new UserRepository()
-        const hashPassword = await userRepository.getHashPassword(email)
-        if (!hashPassword) {
-            // TODO lib de retorno de erros
-            return resolve(BadRequest("Email não cadastrado"))
+        if (!email || !password) {
+            console.log("no_email_or_password")
+            return BadRequest("Email ou senha incorretos")
         }
 
+        const userRepository = new UserRepository()
+        const userAlreadyExists = await userRepository.alreadyExists(email)
+        if (!userAlreadyExists) {
+            console.log("user not found")
+            return BadRequest("Email ou senha incorretos")
+        }
+        const user = await userRepository.getByEmail(email)
+        const hashPassword = await userRepository.getHashPassword(email)
         const isValidPassword = await bcrypt.compare(password, hashPassword)
         if (!isValidPassword) {
-            return resolve(BadRequest("senha incorreta"))
+            console.log("password incorrect")
+            return BadRequest("Email ou senha incorretos")
         }
 
         const secret = process.env.JWT_SECRET
         if (!secret) {
-            return resolve(InternalServerError("jwt secret not found"))
+            console.log("[panic] jwt secret not found")
+            return InternalServerError()
         }
 
-        const user = await userRepository.getByEmail(email)
-
         const TOKEN_EXPIRE_IN_DAYS = 1
-
         const token = jwt.sign({ ...user }, secret, { expiresIn: `${TOKEN_EXPIRE_IN_DAYS}d` })
-        return resolve(StatusOk({
+        return StatusOk({
             token: token,
             expires_at: moment().add(TOKEN_EXPIRE_IN_DAYS, "days").toISOString(),
-        }))
-    })
+        })
+    } catch (err) {
+        console.log(`err: ${JSON.stringify(err)}`)
+        return InternalServerError()
+    }
 }
 
 export const getUser = async (headers: APIGatewayProxyEventHeaders): Promise<DBUser> => {
@@ -58,7 +64,7 @@ export const getUser = async (headers: APIGatewayProxyEventHeaders): Promise<DBU
                 console.log('invalid signature')
                 break;
             default:
-                console.log(JSON.stringify(err))
+                console.log(`err: ${JSON.stringify(err)}`)
                 break;
         }
 
