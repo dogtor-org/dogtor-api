@@ -17,13 +17,12 @@ export const GetToken: Handler = async (req: APIGatewayEvent): Promise<APIGatewa
         }
 
         const userRepository = new UserRepository()
-        const user = await userRepository.getByEmail(email)
-        if (!user.active) {
+        const userAlreadyExists = await userRepository.alreadyExists(email)
+        if (!userAlreadyExists) {
             console.log("user not found")
             return BadRequest("Email ou senha incorretos")
         }
-
-
+        const user = await userRepository.getByEmail(email)
         const hashPassword = await userRepository.getHashPassword(email)
         const isValidPassword = await bcrypt.compare(password, hashPassword)
         if (!isValidPassword) {
@@ -44,7 +43,7 @@ export const GetToken: Handler = async (req: APIGatewayEvent): Promise<APIGatewa
             expires_at: moment().add(TOKEN_EXPIRE_IN_DAYS, "days").toISOString(),
         })
     } catch (err) {
-        console.log(JSON.stringify(err))
+        console.log(`err: ${JSON.stringify(err)}`)
         return InternalServerError()
     }
 }
@@ -65,7 +64,7 @@ export const getUser = async (headers: APIGatewayProxyEventHeaders): Promise<DBU
                 console.log('invalid signature')
                 break;
             default:
-                console.log(JSON.stringify(err))
+                console.log(`err: ${JSON.stringify(err)}`)
                 break;
         }
 

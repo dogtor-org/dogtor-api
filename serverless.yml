@@ -37,6 +37,7 @@ provider:
     DB_HOST: ${env:DB_HOST}
     DB_NAME: ${env:DB_NAME}
     JWT_SECRET: ${env:JWT_SECRET}
+    DEBUG_MODE: true
 
 functions:
   - ${file(./serverless/auth_functions.yml)}

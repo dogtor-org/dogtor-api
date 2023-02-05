@@ -1,39 +1,41 @@
-import { Context, APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { openRoutes, routesMap, validateRoutes } from "../services/routes";
 import * as dotenv from 'dotenv';
-import { InternalServerError, NotFound, Unauthorized } from "../utils/responses";
+import { Context, APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { openRoutes, routesMap } from "../services/routes";
+import { NotFound, Unauthorized } from "../utils/responses";
 import Router from './router';
 import MysqlConnection from '../libs/sql/connection';
+import Logger from '../utils/Logger';
+import Clock from '../utils/Clock';
 
 export async function start(req: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> {
     try {
-        console.log(`req: ${JSON.stringify(req)}`)
+        const log = new Logger("Handler.start")
+        Clock.start("execution")
         dotenv.config()
-
-        const { ok, err } = validateRoutes(routesMap)
-        if (!ok) {
-            console.log("Invalid routes map, duplicated entry found: " + err)
-            return InternalServerError()
-        }
 
         const app = new Router(routesMap, req)
         const { controller, found } = app.process()
         if (!found) {
-            console.log(`route: ${req.resource}`)
+            log.warn(`route not found: ${req.resource}`)
             return NotFound("Rota não encontrada")
         }
 
         if (openRoutes.includes(controller.name)) {
+            log.info(`open route: ${controller.name}`)
             return await controller(req)
         }
 
         const isAuthenticated = await app.checkAuthorization(req.headers)
         if (!isAuthenticated) {
+            log.info(`unauthenticated`)
             return Unauthorized()
         }
 
-        return await controller(req)
+        const result = await controller(req)
+
+        return result
     } finally {
+        Clock.end("execution")
         MysqlConnection.close()
     }
 };

@@ -4,6 +4,7 @@ import Handler from '../../services/interfaces/infra/Handler'
 import { UserRepository } from '../../services/repositories/UserRepository'
 import { Route } from '../../services/routes'
 import { APIGatewayEvent, APIGatewayProxyEventHeaders } from "aws-lambda"
+import Logger from "../../utils/Logger"
 
 export type JwtPayload = {
     user_id: string
@@ -45,46 +46,52 @@ export default class Router {
     }
 
     checkAuthorization = async (headers: APIGatewayProxyEventHeaders): Promise<boolean> => {
-        return new Promise(async (resolve, reject) => {
-            try {
-                if (headers === undefined) {
-                    console.log("headers is undefined")
-                    return resolve(false)
-                }
-
-                const authorization = headers["authorization"] ?? headers["Authorization"]
-                if (!authorization) {
-                    console.log("authorization not found")
-                    return resolve(false)
-                }
-
-                const token = authorization.split(" ")[1]
-                const secret = process.env.JWT_SECRET
-                if (!secret) {
-                    console.log("jwt secret not found")
-                    return resolve(false)
-                }
-
-                const { user_uuid } = jwt.verify(token, secret) as JwtPayload
-
-                const userRepository = new UserRepository()
-                const foundUser = await userRepository.getByUUID(user_uuid)
-                if (!foundUser) {
-                    return resolve(false)
-                }
-
-                return resolve(true)
-            } catch (err) {
-                switch (err["message"]) {
-                    case "invalid signature":
-                        console.log('invalid signature')
-                        break;
-                    default:
-                        console.log(JSON.stringify(err))
-                        break;
-                }
-                return resolve(false)
+        const log = new Logger("checkAuthorization")
+        const map = new Map<string, string>()
+        map.set("headers", JSON.stringify(headers))
+        log.withFields(map)
+        try {
+            if (headers === undefined) {
+                log.debug("headers is undefined")
+                return false
             }
-        })
+
+            const authorization = headers["authorization"] ?? headers["Authorization"]
+            if (!authorization) {
+                log.debug("authorization is not found")
+                return false
+            }
+
+            const token = authorization.split(" ")[1]
+            const secret = process.env.JWT_SECRET
+            if (!secret) {
+                log.debug("secret is not found")
+                return false
+            }
+
+            const payload = jwt.verify(token, secret)
+            log.debug(`payload: ${JSON.stringify(payload)}`)
+            const { user_uuid } = payload as JwtPayload
+            log.debug(`user_uuid: ${user_uuid}`)
+            const userRepository = new UserRepository()
+            log.debug(`user_uuid is (${!(!user_uuid)}) | userRepository is (${!(!userRepository)})`)
+            const foundUser = await userRepository.getByUUID(user_uuid)
+            if (!foundUser) {
+                log.debug("user not found")
+                return false
+            }
+
+            return true
+        } catch (err) {
+            switch (err["message"]) {
+                case "invalid signature":
+                    log.debug('invalid signature')
+                    break;
+                default:
+                    log.debug(`err: ${JSON.stringify(err)}`)
+                    break;
+            }
+            return false
+        }
     }
 }

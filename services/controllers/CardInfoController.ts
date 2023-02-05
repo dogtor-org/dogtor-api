@@ -43,7 +43,7 @@ export const GetAllCards: Handler = async (req: APIGatewayEvent): Promise<APIGat
 
         return await svc.getAllByUserUUID()
     } catch (err) {
-        console.log(JSON.stringify(err))
+        console.log(`err: ${JSON.stringify(err)}`)
         return InternalServerError()
     }
 }
@@ -71,7 +71,7 @@ export const CreateCard: Handler = async (req: APIGatewayEvent): Promise<APIGate
 
         return await svc.createCard(payload)
     } catch (err) {
-        console.log(JSON.parse(err))
+        console.log(`err: ${JSON.stringify(err)}`)
         return InternalServerError()
     }
 }
@@ -90,7 +90,7 @@ export const GetCard: Handler = async (req: APIGatewayEvent): Promise<APIGateway
 
         return await svc.getCardInfo(uuid)
     } catch (err) {
-        console.log(JSON.parse(err))
+        console.log(`err: ${JSON.stringify(err)}`)
         return InternalServerError()
     }
 }
@@ -123,7 +123,7 @@ export const UpdateCard: Handler = async (req: APIGatewayEvent): Promise<APIGate
 
         return await svc.updateCardInfo(payload, uuid)
     } catch (err) {
-        console.log(JSON.parse(err))
+        console.log(`err: ${JSON.stringify(err)}`)
         return InternalServerError()
     }
 }
@@ -142,7 +142,7 @@ export const DeleteCard: Handler = async (req: APIGatewayEvent): Promise<APIGate
 
         return await svc.deleteCardInfo(uuid)
     } catch (err) {
-        console.log(JSON.parse(err))
+        console.log(`err: ${JSON.stringify(err)}`)
         return InternalServerError()
     }
 }
