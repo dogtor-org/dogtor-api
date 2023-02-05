@@ -1,8 +1,8 @@
-DROP SCHEMA IF EXISTS db_dogtor;
+DROP SCHEMA IF EXISTS db_dogtor_dsv;
 
-CREATE SCHEMA db_dogtor;
+CREATE SCHEMA db_dogtor_dsv;
 
-USE db_dogtor;
+USE db_dogtor_dsv;
 
 /* DROP ALL TABLES */
 DROP TABLE IF EXISTS tb_user;
