@@ -5,6 +5,8 @@ import { CardInfo } from '../interfaces/types';
 import { NoContent, BadRequest } from '../../utils/responses'
 import { APIGatewayProxyResult } from 'aws-lambda';
 import { DBUser } from '../interfaces/database';
+import { NewCardInfo } from '../interfaces/step';
+import { sha1 } from '../../utils/hash';
 
 export class CardInfoService {
     constructor(
@@ -22,10 +24,10 @@ export class CardInfoService {
         return StatusOk(viewmodel)
     }
 
-    async createCard(payload: CardInfo): Promise<APIGatewayProxyResult> {
+    async createCard(payload: NewCardInfo): Promise<APIGatewayProxyResult> {
         const cardInfo: CardInfo = {
             uuid: '',
-            hashCpf: payload.hashCpf,
+            hashCpf: sha1(payload.cpf),
             cardNumber: payload.cardNumber,
             cardExpireDate: payload.cardExpireDate,
             cardFlag: payload.cardFlag
@@ -51,10 +53,19 @@ export class CardInfoService {
         return StatusOk(viewmodel)
     }
 
-    async updateCardInfo(newCardInfo: CardInfo): Promise<APIGatewayProxyResult> {
-        await this.repo.update(newCardInfo)
+    async updateCardInfo(payload: NewCardInfo, uuid: string): Promise<APIGatewayProxyResult> {
+        const cardInfo: CardInfo = {
+            uuid: uuid,
+            hashCpf: sha1(payload.cpf),
+            cardNumber: payload.cardNumber,
+            cardExpireDate: payload.cardExpireDate,
+            cardFlag: payload.cardFlag
+        }
+        const newCard = await this.repo.update(cardInfo, {
+            card_info_uuid: uuid
+        })
 
-        return NoContent()
+        return StatusOk(newCard)
     }
 
     async deleteCardInfo(uuid: string): Promise<APIGatewayProxyResult> {

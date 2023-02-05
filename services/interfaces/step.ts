@@ -29,3 +29,10 @@ export type NewPet = {
     specieID: number;
     raceID: number;
 }
+
+export type NewCardInfo = {
+    cpf: string;
+    cardNumber: string;
+    cardExpireDate: moment.Moment;
+    cardFlag: string;
+}
