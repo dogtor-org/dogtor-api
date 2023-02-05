@@ -1,4 +1,4 @@
-name: Dogtor API 🩺
+name: Dogtor API 🩺 TESTING
 on:
   push:
     branches-ignore:

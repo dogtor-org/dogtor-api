@@ -46,7 +46,7 @@ export default class Router {
     }
 
     checkAuthorization = async (headers: APIGatewayProxyEventHeaders): Promise<boolean> => {
-        const log = new Logger()
+        const log = new Logger("checkAuthorization")
         const map = new Map<string, string>()
         map.set("headers", JSON.stringify(headers))
         log.withFields(map)

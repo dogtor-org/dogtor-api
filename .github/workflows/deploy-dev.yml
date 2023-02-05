@@ -1,4 +1,4 @@
-name: Dogtor API 🩺
+name: Dogtor API 🩺 DSV
 on:
   push:
     branches:
