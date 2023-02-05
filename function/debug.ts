@@ -32,8 +32,8 @@ const defaultRequest = {
         "specieID": 1,
         "raceID": 2,
     }),
-    httpMethod: "POST",
-    resource: "/user/register",
+    httpMethod: "GET",
+    resource: "/card",
     // path: "/pet/1fdcf85e-a436-11ed-9927-02272ccf360a",
     // pathParameters: {
     //     "pet_id": "1fdcf85e-a436-11ed-9927-02272ccf360a"
