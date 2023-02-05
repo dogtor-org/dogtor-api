@@ -1,7 +1,7 @@
 import { DBPet } from '../interfaces/database';
 import { Pet } from '../interfaces/types';
 import { OkPacket, Connection } from 'mysql2';
-import { createConnection } from '../../libs/sql/connection';
+import MysqlConnection from '../../libs/sql/connection';
 import * as moment from 'moment';
 import { BadRequest } from '../../utils/responses';
 
@@ -10,7 +10,7 @@ const table = "tb_pet"
 export class PetRepository {
     private conn: Connection;
     constructor() {
-        this.conn = createConnection()
+        this.conn = MysqlConnection.createConnection()
     }
 
     parseAll(p: DBPet[]): Pet[] {

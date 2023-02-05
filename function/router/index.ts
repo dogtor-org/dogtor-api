@@ -1,10 +1,9 @@
 import * as _ from "lodash"
+import * as jwt from "jsonwebtoken"
 import Handler from '../../services/interfaces/infra/Handler'
 import { UserRepository } from '../../services/repositories/UserRepository'
 import { Route } from '../../services/routes'
-import { InternalServerError, NotFound, Unauthorized } from '../../utils/responses'
-import * as jwt from "jsonwebtoken"
-import { APIGatewayEvent, APIGatewayProxyCallback, APIGatewayProxyEventHeaders } from "aws-lambda"
+import { APIGatewayEvent, APIGatewayProxyEventHeaders } from "aws-lambda"
 
 export type JwtPayload = {
     user_id: string

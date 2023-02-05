@@ -1,7 +1,7 @@
 import { DBUser } from './../interfaces/database';
 import { User } from './../interfaces/types';
 import { OkPacket, Connection, RowDataPacket } from 'mysql2';
-import { createConnection } from '../../libs/sql/connection';
+import MysqlConnection from '../../libs/sql/connection';
 import * as bcrypt from "bcrypt"
 import * as moment from 'moment';
 import { Register } from '../interfaces/step';
@@ -12,9 +12,9 @@ const table = "tb_user"
 export class UserRepository {
     private conn: Connection;
     constructor() {
-        this.conn = createConnection()
+        this.conn = MysqlConnection.createConnection()
     }
-
+    
     parseAll(u: DBUser[]): User[] {
         const users: User[] = []
         u.map((dbUser) => {

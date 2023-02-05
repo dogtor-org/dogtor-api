@@ -1,14 +1,14 @@
 import { DBAddress } from '../interfaces/database';
 import { Address } from '../interfaces/types';
 import { OkPacket, Connection } from 'mysql2';
-import { createConnection } from '../../libs/sql/connection';
+import MysqlConnection from '../../libs/sql/connection';
 
 const table = "tb_address"
 
 export class AddressRepository {
     private conn: Connection;
     constructor() {
-        this.conn = createConnection()
+        this.conn = MysqlConnection.createConnection()
     }
 
     parseAll(a: DBAddress[]): Address[] {

@@ -32,9 +32,9 @@ const defaultRequest = {
         "specieID": 1,
         "raceID": 2,
     }),
-    httpMethod: "PUT",
-    resource: "/pet/{pet_id}",
-    path: "/pet/1fdcf85e-a436-11ed-9927-02272ccf360a",
+    httpMethod: "GET",
+    resource: "/pet",
+    // path: "/pet/1fdcf85e-a436-11ed-9927-02272ccf360a",
     pathParameters: {
         "pet_id": "1fdcf85e-a436-11ed-9927-02272ccf360a"
     } as APIGatewayProxyEventPathParameters,
