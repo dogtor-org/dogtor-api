@@ -30,8 +30,8 @@ CREATE TABLE tb_user (
 CREATE TABLE tb_address (
     address_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     --
-    user_uuid VARCHAR(36) NOT NULL,
-    company_branch_uuid VARCHAR(36) NOT NULL,
+    user_uuid VARCHAR(36),
+    company_branch_uuid VARCHAR(36),
     zip_code VARCHAR(45) NOT NULL,
     country VARCHAR(45) NOT NULL,
     city VARCHAR(45) NOT NULL,

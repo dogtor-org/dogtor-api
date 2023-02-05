@@ -22,7 +22,7 @@ const defaultRequest = {
             "number": 50,
             "additionalInfo": "Marco zero de Sao Paulo"
         },
-        "email": "email@example.com",
+        "email": "emailxxx@example.com",
         "phoneNumber": "(11) 91234-5678",
         "password": "Password#01",
 
@@ -32,8 +32,8 @@ const defaultRequest = {
         "specieID": 1,
         "raceID": 2,
     }),
-    httpMethod: "GET",
-    resource: "/card",
+    httpMethod: "POST",
+    resource: "/user/register",
     // path: "/pet/1fdcf85e-a436-11ed-9927-02272ccf360a",
     // pathParameters: {
     //     "pet_id": "1fdcf85e-a436-11ed-9927-02272ccf360a"

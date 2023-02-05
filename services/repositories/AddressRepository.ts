@@ -63,7 +63,7 @@ export class AddressRepository {
                 [address.zipCode, address.country, address.city, address.streetName, address.number, address.additionalInfo, extraFields["user_uuid"], extraFields["company_branch_uuid"]],
 
                 (err, res) => {
-                    if (err) reject(err);
+                    if (err) throw err;
                     resolve(res.insertId)
                 }
             )
