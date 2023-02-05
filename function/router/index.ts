@@ -69,9 +69,12 @@ export default class Router {
                 return false
             }
 
-            const { user_uuid } = jwt.verify(token, secret) as JwtPayload
+            const payload = jwt.verify(token, secret)
+            log.debug(`payload: ${JSON.stringify(payload)}`)
+            const { user_uuid } = payload as JwtPayload
+            log.debug(`user_uuid: ${user_uuid}`)
             const userRepository = new UserRepository()
-            log.debug(`user_uuid is (${!(!user_uuid)})\nuserRepository is (${!(!userRepository)})`)
+            log.debug(`user_uuid is (${!(!user_uuid)}) | userRepository is (${!(!userRepository)})`)
             const foundUser = await userRepository.getByUUID(user_uuid)
             if (!foundUser) {
                 log.debug("user not found")
