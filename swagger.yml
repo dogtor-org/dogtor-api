@@ -7,12 +7,16 @@ tags:
     - name: Auth
     - name: User
     - name: Pet
+    - name: Card Info
     
 servers:
   - url: https://api.dogtor.store
     description: Production server
     
 paths:
+
+#### AUTH ####
+
   /auth:
     post:
       summary: Get Token
@@ -37,7 +41,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/404NotFound'
-                
+
+#### USER ####
                 
   /user/register:
     post:
@@ -54,7 +59,8 @@ paths:
         '201':
           description: "No Content"
           
-          
+#### PET ####
+
   /pet:
     get:
       summary: Get all user pets
@@ -135,6 +141,93 @@ paths:
             type: string
           required: true
           description: UUID of the target pet
+      responses:
+        '201':
+          description: "No Content"
+
+#### CARD INFO ####
+
+  /card:
+    get:
+      summary: Get all user cards
+      tags:
+        - Card Info
+      responses:
+        '201':
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CardInfo"
+
+    post:
+      summary: Register new Card
+      tags:
+        - Card Info
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCardInfo'
+      responses:
+        '201':
+          description: "No Content"
+          
+  /card/{card_info_id}:
+    get:
+      summary: Get some Card
+      tags:
+        - Card Info
+      parameters:
+        - in: path
+          name: card_info_id
+          schema:
+            type: string
+          required: true
+          description: UUID of the target card
+      responses:
+        '200':
+          description: "Card"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardInfo"
+
+    put:
+      summary: Update some Card
+      tags:
+        - Card Info
+      parameters:
+        - in: path
+          name: card_info_id
+          schema:
+            type: string
+          required: true
+          description: UUID of the target card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardInfo'
+      responses:
+        '201':
+          description: "No Content"
+          
+    delete:
+      summary: Delete some Card
+      tags:
+        - Card Info
+      parameters:
+        - in: path
+          name: card_info_id
+          schema:
+            type: string
+          required: true
+          description: UUID of the target card
       responses:
         '201':
           description: "No Content"
@@ -264,6 +357,22 @@ components:
         additionalInfo:
           type: string
           example: "Marco Zero de Sao Paulo"
+
+    NewCardInfo:
+      type: object
+      properties:
+        cpf:
+          type: string
+          example: "012.345.678-90"
+        cardNumber:
+          type: string
+          example: "1234 5678 9012 3456"
+        cardExpireDate:
+          type: string
+          example: "01/30"
+        cardFlag:
+          type: string
+          example: "Mastercard"
       
     CardInfo:
       type: object
