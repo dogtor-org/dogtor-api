@@ -6,6 +6,7 @@ import { getUser } from './AuthController';
 import { CardInfoRepository } from '../repositories/CardInfoRepository';
 import { CardInfoService } from '../services/CardInfoService';
 import { CardInfo } from '../interfaces/types';
+import { NewCardInfo } from '../interfaces/step';
 
 async function getSvc(req: APIGatewayEvent): Promise<{ svc: CardInfoService; err: APIGatewayProxyResult; }> {
     const user = await getUser(req.headers)
@@ -55,9 +56,8 @@ export const CreateCard: Handler = async (req: APIGatewayEvent): Promise<APIGate
         }
 
         let body = JSON.parse(req.body)
-        let payload: CardInfo = {
-            uuid: body.uuid,
-            hashCpf: body.hashCpf,
+        let payload: NewCardInfo = {
+            cpf: body.cpf,
             cardNumber: body.cardNumber,
             cardExpireDate: body.cardExpireDate,
             cardFlag: body.cardFlag,
@@ -108,15 +108,20 @@ export const UpdateCard: Handler = async (req: APIGatewayEvent): Promise<APIGate
         }
 
         let body = JSON.parse(req.body)
-        let cardInfo: CardInfo = {
-            uuid: uuid,
-            hashCpf: body.hashCpf,
+        let payload: NewCardInfo = {
+            cpf: body.cpf,
             cardNumber: body.cardNumber,
             cardExpireDate: body.cardExpireDate,
             cardFlag: body.cardFlag,
         };
 
-        return await svc.updateCardInfo(cardInfo)
+        for (const key of Object.keys(payload)) {
+            if (!payload[key]) {
+                return BadRequest(`O campo ${translate(key)} é obrigatório.`)
+            }
+        }
+
+        return await svc.updateCardInfo(payload, uuid)
     } catch (err) {
         console.log(JSON.parse(err))
         return InternalServerError()
