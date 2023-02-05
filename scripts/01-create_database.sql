@@ -16,7 +16,7 @@ CREATE TABLE tb_user (
     user_uuid VARCHAR(36) NOT NULL,
     --
     full_name VARCHAR(45) NOT NULL,
-    hash_cpf VARCHAR(255) NOT NULL,
+    hash_cpf VARCHAR(40) NOT NULL,
     email VARCHAR(45) NOT NULL,
     birth_date VARCHAR(45) NOT NULL,
     hash_password VARCHAR(255) NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE tb_card_info (
     card_info_uuid VARCHAR(36) NOT NULL,
     --
     user_uuid VARCHAR(36) NOT NULL,
-    hash_cpf INT NOT NULL,
+    hash_cpf VARCHAR(40) NOT NULL,
     card_number VARCHAR(45) NOT NULL,
     card_expire_date VARCHAR(5) NOT NULL,
     card_flag VARCHAR(45) NOT NULL,
