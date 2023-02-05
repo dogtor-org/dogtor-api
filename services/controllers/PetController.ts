@@ -113,8 +113,7 @@ export const UpdatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
         }
 
         let body = JSON.parse(req.body)
-        let pet: Pet = {
-            uuid: uuid,
+        let payload: NewPet = {
             fullName: body.fullName,
             birthDate: body.birthDate,
             size: body.size,
@@ -122,10 +121,15 @@ export const UpdatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
             description: body.description,
             specieID: body.specieID,
             raceID: body.raceID,
-            userID: 0
         };
 
-        return await svc.updatePet(pet)
+        for (const key of Object.keys(payload)) {
+            if (!payload[key]) {
+                return BadRequest(`O campo ${translate(key)} é obrigatório.`)
+            }
+        }
+
+        return await svc.updatePet(payload, uuid)
     } catch (err) {
         console.log(JSON.parse(err))
         return InternalServerError()
