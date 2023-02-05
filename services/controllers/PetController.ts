@@ -76,7 +76,7 @@ export const CreatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
 
         return await svc.createPet(payload)
     } catch (err) {
-        console.log(JSON.parse(err))
+        console.log(`err: ${JSON.stringify(err)}`)
         return InternalServerError()
     }
 }
@@ -95,7 +95,7 @@ export const GetPet: Handler = async (req: APIGatewayEvent): Promise<APIGatewayP
 
         return await svc.getPet(uuid)
     } catch (err) {
-        console.log(JSON.parse(err))
+        console.log(`err: ${JSON.stringify(err)}`)
         return InternalServerError()
     }
 }
@@ -131,7 +131,7 @@ export const UpdatePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
 
         return await svc.updatePet(payload, uuid)
     } catch (err) {
-        console.log(JSON.parse(err))
+        console.log(`err: ${JSON.stringify(err)}`)
         return InternalServerError()
     }
 }
@@ -150,7 +150,7 @@ export const DeletePet: Handler = async (req: APIGatewayEvent): Promise<APIGatew
 
         return await svc.deletePet(uuid)
     } catch (err) {
-        console.log(JSON.parse(err))
+        console.log(`err: ${JSON.stringify(err)}`)
         return InternalServerError()
     }
 }

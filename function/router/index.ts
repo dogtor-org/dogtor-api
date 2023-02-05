@@ -88,7 +88,7 @@ export default class Router {
                     log.debug('invalid signature')
                     break;
                 default:
-                    log.debug(JSON.stringify(err))
+                    log.debug(`err: ${JSON.stringify(err)}`)
                     break;
             }
             return false
