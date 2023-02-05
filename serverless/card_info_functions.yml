@@ -1,0 +1,36 @@
+####### CARD INFO ########
+getAllCards:
+  handler: function/Handler.start
+  events:
+    - http:
+        path: /card
+        method: GET
+        cors: true
+insertCard:
+  handler: function/Handler.start
+  events:
+    - http:
+        path: /card
+        method: POST
+        cors: true
+getCard:
+  handler: function/Handler.start
+  events:
+    - http:
+        path: /card/{card_info_id}
+        method: GET
+        cors: true
+updateCard:
+  handler: function/Handler.start
+  events:
+    - http:
+        path: /card/{card_info_id}
+        method: PUT
+        cors: true
+deleteCard:
+  handler: function/Handler.start
+  events:
+    - http:
+        path: /card/{card_info_id}
+        method: DELETE
+        cors: true

@@ -38,7 +38,10 @@ provider:
     DB_NAME: ${env:DB_NAME}
     JWT_SECRET: ${env:JWT_SECRET}
 
-functions: ${file(./serverless/functions.yml)}
+functions:
+  - ${file(./serverless/auth_functions.yml)}
+  - ${file(./serverless/pet_functions.yml)}
+  - ${file(./serverless/card_info_functions.yml)}
 
 plugins:
   - serverless-plugin-typescript
