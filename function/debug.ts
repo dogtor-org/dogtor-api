@@ -22,7 +22,7 @@ const defaultRequest = {
             "number": 50,
             "additionalInfo": "Marco zero de Sao Paulo"
         },
-        "email": "email@example.com",
+        "email": "emailxxx@example.com",
         "phoneNumber": "(11) 91234-5678",
         "password": "Password#01",
 
@@ -32,12 +32,12 @@ const defaultRequest = {
         "specieID": 1,
         "raceID": 2,
     }),
-    httpMethod: "GET",
-    resource: "/pet",
+    httpMethod: "POST",
+    resource: "/user/register",
     // path: "/pet/1fdcf85e-a436-11ed-9927-02272ccf360a",
-    pathParameters: {
-        "pet_id": "1fdcf85e-a436-11ed-9927-02272ccf360a"
-    } as APIGatewayProxyEventPathParameters,
+    // pathParameters: {
+    //     "pet_id": "1fdcf85e-a436-11ed-9927-02272ccf360a"
+    // } as APIGatewayProxyEventPathParameters,
     headers: {
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX3V1aWQiOiJkZDdmZjRhNC1hMWNhLTExZWQtOTkyNy0wMjI3MmNjZjM2MGEiLCJmdWxsX25hbWUiOiJOYW1lIEV4YW1wbGUiLCJoYXNoX2NwZiI6IiIsImVtYWlsIjoiZW1haWxAZXhhbXBsZS5jb20iLCJiaXJ0aF9kYXRlIjoiMjAyMy0wMS0wMSIsImNyZWF0ZWRfYXQiOiIyMDIzLTAyLTAxVDAwOjUzOjM4LjAwMFoiLCJ1cGRhdGVkX2F0IjoiMjAyMy0wMi0wMVQwMDo1MzozOC4wMDBaIiwiYWN0aXZlIjoxLCJpYXQiOjE2NzU0NTM1MzUsImV4cCI6MTY3NTUzOTkzNX0.HNkDSiVPBkFndOfCsdLg_kLQ-DLHPJbM1Lvq8pJ5S-Y",
     } as APIGatewayProxyEventHeaders

@@ -61,7 +61,7 @@ export class UserRepository {
                 [user.fullName, hashCpf, user.email, user.birthDate, hashPassword],
 
                 (err, res) => {
-                    if (err) reject(err);
+                    if (err) throw err;
                     resolve(res.insertId)
                 }
             )
