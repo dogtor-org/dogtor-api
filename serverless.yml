@@ -44,3 +44,4 @@ plugins:
   - serverless-plugin-typescript
   - serverless-domain-manager
   - serverless-certificate-creator
+  
