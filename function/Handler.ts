@@ -7,7 +7,7 @@ import MysqlConnection from '../libs/sql/connection';
 
 export async function start(req: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> {
     try {
-        console.log(`req: ${JSON.stringify(req)}`)
+        // console.log(`req: ${JSON.stringify(req)}`)
         dotenv.config()
 
         const { ok, err } = validateRoutes(routesMap)

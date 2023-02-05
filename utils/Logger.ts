@@ -25,7 +25,14 @@ export default class Logger {
                 this.fields.set("message", message)
             }
 
-            console.log(JSON.stringify(this.fields))
+            console.log(JSON.stringify(mapToObj(this.fields)))
         }
     }
+}
+
+function mapToObj(map: Map<string, string>): {} {
+    const obj = {}
+    for (let [k, v] of map)
+        obj[k] = v
+    return obj
 }
