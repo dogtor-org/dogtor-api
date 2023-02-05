@@ -49,10 +49,16 @@ export class PetService {
         return StatusOk(viewmodel)
     }
 
-    async updatePet(newPet: Pet): Promise<APIGatewayProxyResult> {
-        await this.repo.update(newPet)
+    async updatePet(payload: NewPet, uuid: string): Promise<APIGatewayProxyResult> {
+        const pet: Pet = {
+            uuid: uuid,
+            ...payload,
+            birthDate: moment(payload.birthDate),
+            userID: this.user.user_id
+        }
+        const newPet = await this.repo.update(pet)
 
-        return NoContent()
+        return StatusOk(newPet)
     }
 
     async deletePet(uuid: string): Promise<APIGatewayProxyResult> {

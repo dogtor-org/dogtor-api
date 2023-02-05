@@ -64,9 +64,7 @@ export class CardInfoRepository {
         })
     }
 
-    update(cardInfo: CardInfo, extraInfo: {
-        card_info_uuid: string,
-    }): Promise<DBCardInfo> {
+    update(cardInfo: CardInfo): Promise<DBCardInfo> {
         return new Promise((resolve, reject) => {
             this.conn.query<OkPacket>(
                 `UPDATE ${table} SET 
@@ -77,7 +75,7 @@ export class CardInfoRepository {
 
                 WHERE card_info_uuid = ? AND active`,
 
-                [cardInfo.hashCpf, cardInfo.cardNumber, cardInfo.cardExpireDate, cardInfo.cardFlag, extraInfo["card_info_uuid"]],
+                [cardInfo.hashCpf, cardInfo.cardNumber, cardInfo.cardExpireDate, cardInfo.cardFlag, cardInfo.uuid],
 
                 (err, res) => {
                     if (err) throw err;

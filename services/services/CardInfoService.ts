@@ -61,9 +61,7 @@ export class CardInfoService {
             cardExpireDate: payload.cardExpireDate,
             cardFlag: payload.cardFlag
         }
-        const newCard = await this.repo.update(cardInfo, {
-            card_info_uuid: uuid
-        })
+        const newCard = await this.repo.update(cardInfo)
 
         return StatusOk(newCard)
     }
